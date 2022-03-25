@@ -17,6 +17,8 @@ var userSchema = new Mongoose.Schema({
   password: { type: String },
   role: { type: String },  //peserta or admin
   status: { type: String }, //active or notyet
+  // date_registered: { type: Date }
+  date_registered: { type: String }
 }, schemaOptions)
 
 
