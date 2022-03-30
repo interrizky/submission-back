@@ -185,9 +185,8 @@ exports.auth = async(req, res) => {
     const data = await userModel.findOne( {'email': req.body.username, 'password': req.body.passwd} )
 
     if( data === null || data === 'undefined' ) {
-      res.status(401).send({
+      res.status(200).send({
         message: "Hey, Invalid username or password",
-        result: "Hey, Invalid username or password"
       })      
     } else {
       let userData = {
