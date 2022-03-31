@@ -1,10 +1,8 @@
 const express = require('express');
-const formdata = require('form-data');
 const path = require('path');
 const cors = require('cors');
 const http = require('http');
 const morgan = require('morgan'); 
-const multer = require('multer');
 const dotenv = require('dotenv');
 
 const port = process.env.PORT || 2020;

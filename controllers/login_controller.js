@@ -3,9 +3,9 @@ const JWT = require('jsonwebtoken')
 const { ConnectionClosedEvent } = require('mongodb')
 const date = require('date-and-time')
 
-// config and setup email
+/* config and setup email */
 const mail = require('../lib/email/send')
-// load model
+/* load model */
 const userModel = require('../models/user_model')
 
 /* button register pada halaman register */
