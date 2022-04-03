@@ -26,8 +26,8 @@ routes.post('/checkmail', loginController.checkmail)
 routes.post('/forgotpwd', loginController.forgotpwd)
 routes.post('/sendcode', loginController.sendcode)
 
-/* User Dash API */
-routes.post('/uploadfile', uploadMultiple, userdashController.uploadfile)
+/* user API */
+routes.post('/savethepaper', userdashController.savethepaper)
 
 //Export to index.JS
 module.exports = routes
