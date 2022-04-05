@@ -8,18 +8,6 @@ const { upload } = require('../helpers/upload_helper');
 const loginController = require('../controllers/login_controller')
 const userdashController = require('../controllers/userdash_controller')
 
-/* multer for upload files */
-// let storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "public/uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-//   },
-// });
-// let upload = multer({ storage: storage });
-// let uploadMultiple = upload.fields([{ name: 'file-1', maxCount: 10 }, { name: 'file-2', maxCount: 10 }, { name: 'file-3', maxCount: 10 }])
-
 /* login API */
 routes.post('/register', loginController.register)
 routes.post('/auth', loginController.auth)

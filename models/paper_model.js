@@ -14,6 +14,7 @@ var schemaOptions = {
 
 var paperSchema = new Mongoose.Schema({
   paper_code : { type: String },
+  participation_code : { type: String },
   title : { type: String },
   paper_type : { type: String },
   sub_theme : { type: String },  
