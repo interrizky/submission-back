@@ -26,6 +26,8 @@ const cpUpload = upload.fields([
   { name: 'cv_file_3', maxCount: 1 }, 
 ])
 routes.post('/savethepaper', cpUpload, userdashController.savethepaper)
+routes.post('/getMypassword', userdashController.getMypassword)
+routes.post('/fetchTable', userdashController.fetchTable)
 
 //Export to index.JS
 module.exports = routes
