@@ -8,8 +8,32 @@ const mail = require('../lib/email/send')
 /* load model */
 const userModel = require('../models/user_model')
 
+/* format kode user */
+const generateCodeUser = async() => {
+  let number = await userModel.estimatedDocumentCount({}).exec()
+
+  if(number > 0) {
+    number = number+1
+  } else {
+    number = 1
+  }
+
+  let newNumber = ""
+  if( number >= 1 && number <= 9 ) {
+    newNumber = "000"+number
+  } else if(number >= 10 && number <= 99) {
+    newNumber = "00"+number
+  } else if(number >= 100 && number <= 999) {
+    newNumber = "0"+number
+  } else {
+    newNumber = number
+  }
+
+  return newNumber
+}
+
 /* button register pada halaman register */
-exports.register = (request, response) => {
+exports.register = async(request, response) => {
   try {
     /* override date object */
     const now = new Date();
@@ -19,7 +43,13 @@ exports.register = (request, response) => {
     let max = 90000;
     let rand = Math.floor(Math.random() * min) + max;
 
+    /* call generate code user */
+    let number = await generateCodeUser().then(result => result)
+    let newNumber = 'UID-'+number
+    console.log(newNumber)
+
     const dataOptions = new userModel({
+      userid_code: newNumber,
       name: request.body.data_nama,
       email: request.body.data_email,
       phone: request.body.data_handphone,
@@ -192,10 +222,12 @@ exports.auth = async(req, res) => {
       })      
     } else {
       let userData = {
+        userid_code: data.userid_code,
         email: data.email,
         name: data.name,
         role: data.role,
         phone: data.phone,
+        organization: data.organization,
         user_status: data.user_status
       }
 
@@ -220,9 +252,6 @@ exports.verify = async(req, res) => {
 
     /* kalo ada dan sesuai */
     if( data != null ) {
-      /* update status inactive ke active */
-      // `doc` is the document _after_ `update` was applied because of
-      // `returnOriginal: false`
       const filter = { registration_code: req.body.kode_registrasi, email: req.body.email, name: req.body.name};
       const update = { user_status: "active" };      
       const doc = await userModel.findOneAndUpdate(filter, update, {returnOriginal: false})      

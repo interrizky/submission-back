@@ -11,6 +11,7 @@ var schemaOptions = {
 };
 
 var userSchema = new Mongoose.Schema({
+  userid_code: { type: String, required: true },  
   name: { type: String, required: true }, 
   organization: { type: String, required: true },  
   phone: { type: String, required: true },     

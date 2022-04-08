@@ -14,7 +14,7 @@ var schemaOptions = {
 
 var paperSchema = new Mongoose.Schema({
   paper_code : { type: String },
-  participation_code : { type: String },
+  userid_code : { type: String },
   title : { type: String },
   paper_type : { type: String },
   sub_theme : { type: String },  
@@ -22,6 +22,8 @@ var paperSchema = new Mongoose.Schema({
   participation_type : { type: String },
   upload_date : { type: String },
   submission_date : { type: String },
+  submit_status: { type: String }, //submit or nosubmit
+  paper_status: { type: String }, //lolos or nololos
   name_1 : { type: String },
   phone_1 : { type: String },
   organization_1 : { type: String },
