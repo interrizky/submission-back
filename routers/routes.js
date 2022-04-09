@@ -22,14 +22,16 @@ const cpUpload = upload.fields([
   { name: 'cv_file', maxCount: 1 }, 
   { name: 'pernyataan_file', maxCount: 1 },
   { name: 'lampiran_file', maxCount: 1 },
-  { name: 'cv_file_2', maxCount: 1 }, 
-  { name: 'cv_file_3', maxCount: 1 }, 
+  { name: 'cv_2_file', maxCount: 1 }, 
+  { name: 'cv_3_file', maxCount: 1 }, 
 ])
 routes.post('/savePaperOne', cpUpload, userdashController.savePaperOne)
 routes.post('/updatePaperOne', cpUpload, userdashController.updatePaperOne)
+routes.post('/savePaperGroup', cpUpload, userdashController.savePaperGroup)
+routes.post('/updatePaperGroup', cpUpload, userdashController.updatePaperGroup)
 routes.post('/getMypassword', userdashController.getMypassword)
 routes.post('/fetchTable', userdashController.fetchTable)
-routes.post('/fetchPaperOne', userdashController.fetchPaperOne)
+routes.post('/fetchPaper', userdashController.fetchPaper)
 
 //Export to index.JS
 module.exports = routes
