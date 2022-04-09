@@ -2,9 +2,11 @@ const express = require('express')
 const JWT = require('jsonwebtoken')
 const { ConnectionClosedEvent } = require('mongodb')
 const date = require('date-and-time')
+const path = require('path');
 
 /* config and setup email */
 const mail = require('../lib/email/send')
+
 /* load model */
 const userModel = require('../models/user_model')
 
@@ -78,7 +80,12 @@ exports.register = async(request, response) => {
           context:{
             nama: request.body.data_nama,
             kode: rand
-          }
+          },
+          attachments: [{
+            filename: 'ejavec-forum-email-logo.png',
+            path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+            cid: 'ejavec-forum-email-logo'
+          }],
         };
 
         /* trigger the sending of the E-mail */
@@ -144,7 +151,12 @@ exports.forgotpwd = async(req, res) => {
       template: 'ejavec-lupa-password', // the name of the template file i.e email.handlebars
       context:{
         password: data.password,
-      }
+      },
+      attachments: [{
+        filename: 'ejavec-forum-email-logo.png',
+        path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+        cid: 'ejavec-forum-email-logo'
+      }],
     };
 
     // trigger the sending of the E-mail
@@ -172,11 +184,7 @@ exports.forgotpwd = async(req, res) => {
 exports.sendcode = async(req, res) => {
   const data = await userModel.findOne( { 'email': req.body.data_email } )
 
-  console.log(data)
-  console.log(req.body.data_kode)
-
   if(data && req.body.data_kode === 'sendcode') {
-    /* forgot password */
     let mailOptions = {
       from: "EJAVEC 2022 <submission@ejavec.org>",
       to: req.body.data_email,
@@ -185,7 +193,12 @@ exports.sendcode = async(req, res) => {
       template: 'ejavec-verifikasi', // the name of the template file i.e email.handlebars
       context:{
         kode: data.registration_code,
-      }
+      },
+      attachments: [{
+        filename: 'ejavec-forum-email-logo.png',
+        path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+        cid: 'ejavec-forum-email-logo'
+      }],    
     };
 
     // trigger the sending of the E-mail

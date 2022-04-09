@@ -15,7 +15,8 @@ const server = http.createServer(app)
 server.listen(port, () => { console.log(`Server is running in port ${ port }`) })
 
 app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 /* Reading Folders & Files in Public Folder */
 app.use(express.static('public'))

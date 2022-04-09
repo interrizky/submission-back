@@ -2,6 +2,9 @@ const fse = require('fs-extra')
 const JWT = require('jsonwebtoken')
 const date = require('date-and-time')
 
+/* config and setup email */
+const mail = require('../lib/email/send')
+
 /* load model */
 const userModel = require('../models/user_model')
 const paperModel = require('../models/paper_model')
@@ -741,4 +744,60 @@ exports.updatePaperGroup = async(req, res) => {
   } else {
     res.send({ status: 'failed', message: 'Failed To Update Data' })      
   }  
+}
+
+/* submit paper */
+exports.submitPaper = async(req, res) => {
+  try {
+    const now_date = new Date()
+    const deadline_date = new Date(2022, 4, 2, 0, 0, 1)
+
+    console.log(req.body)
+  
+    if( date.format(now_date, 'DD/MM/YYYY HH:mm:ss') > date.format(deadline_date, 'DD/MM/YYYY HH:mm:ss') ) {
+      const filter = { paper_code: req.body.data_papercode, participation_type: req.body.data_participationtype }
+      const update = { submission_date: date.format(now_date, 'DD/MM/YYYY HH:mm:ss'), submit_status: 'submit' }
+      const opts = { new: true }
+      const posting = await paperModel.findOneAndUpdate(filter, update, opts).exec({})
+
+      if( posting && (req.body.data_email !== '' || req.body.data_email !== null) ) {
+        console.log(posting)
+        console.log(req.body.data_email)
+
+        let mailOptions = {
+          from: "EJAVEC 2022 <submission@ejavec.org>",
+          to: req.body.data_email,
+          cc: "interrizky@ymail.com",
+          subject: "Paper Submission",
+          template: 'ejavec-notif-submit', // the name of the template file i.e email.handlebars
+          context:{
+            nama: posting.name_1,
+            judul: posting.title,
+            subTema: posting.sub_theme,
+            noReg: posting.paper_code
+          },
+          attachments: [{
+            filename: 'ejavec-forum-email-logo.png',
+            path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+            cid: 'ejavec-forum-email-logo'
+          }],
+        }
+
+        /* trigger the sending of the E-mail */
+        mail.sendMail(mailOptions, function(error, info){
+          if(error){
+            return console.log(error);
+          }
+          console.log('Message sent: ' + info.response);
+        })
+
+        /* send response */
+        response.send({ status: "success", message: "Succeed! Paper Submitted!", result: posting })        
+      }
+    } else {   
+      res.send({ status: 'failed', message: 'Deadline Data Is Over' })
+    }    
+  } catch (error) {
+    res.send({ status: 'failed', message: error })
+  }
 }
