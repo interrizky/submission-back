@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-// const dotenv = require('dotenv')
-require('dotenv').config({ path: 'ENV_FILENAME' });
+const dotenv = require('dotenv')
+// require('dotenv').config({ path: 'ENV_FILENAME' });
 
 // Load environment variables from .env file
-// dotenv.config();
+dotenv.config();
 
 //connect to the mongodb database .URI which is in the env file
 async function connectDB() {
@@ -22,7 +22,8 @@ async function connectDB() {
       retryWrites: true,
       w: "majority"
     };
-    const conn = await mongoose.connect(process.env.DB_URI, options);
+    // const conn = mongoose.connect(process.env.DB_URI, options);
+    const conn = mongoose.connect('mongodb://learn-shard-00-00.eedrt.mongodb.net:27017,learn-shard-00-01.eedrt.mongodb.net:27017,learn-shard-00-02.eedrt.mongodb.net:27017', options);
     console.log('MongoDB Connected on Host : ' + conn.connection.host);
   } catch (error) {
     console.log('Error! ' + error);
