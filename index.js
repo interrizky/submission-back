@@ -5,10 +5,12 @@ const http = require('http');
 const morgan = require('morgan'); 
 const dotenv = require('dotenv')
 
-/* set up */
-const port = process.env.PORT || 5000;
-const app = express();
+/* load dotenv */
 dotenv.config();
+
+/* set up */
+const port = process.env.PORT || 2022;
+const app = express();
 
 /* for app running connection with port and Mongo database */
 const server = http.createServer(app)
