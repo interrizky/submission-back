@@ -1,14 +1,13 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-// const http = require('http');
-const https = require('https');
+const http = require('http');
+// const https = require('https');
 const morgan = require('morgan'); 
 const dotenv = require('dotenv')
 
 /* load dotenv */
 dotenv.config();
-
 
 /* set up */
 const port = process.env.PORT || 2022;
@@ -18,8 +17,8 @@ const app = express();
 app.use(cors());
 
 /* for app running connection with port and Mongo database */
-// const server = http.createServer(app)
-const server = https.createServer(app)
+const server = http.createServer(app)
+// const server = https.createServer(app)
 server.listen(port, () => { console.log(`Server is running in port ${ port }`) })
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))

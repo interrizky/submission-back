@@ -10,12 +10,12 @@ const loginController = require('../controllers/login_controller')
 const userdashController = require('../controllers/userdash_controller')
 
 /* login API */
-routes.post('/register', cors(), loginController.register)
-routes.post('/auth', cors(), loginController.auth)
-routes.post('/verify', cors(), loginController.verify)
-routes.post('/checkmail', cors(), loginController.checkmail)
-routes.post('/forgotpwd', cors(), loginController.forgotpwd)
-routes.post('/sendcode', cors(), loginController.sendcode)
+routes.post('/register', loginController.register)
+routes.post('/auth', loginController.auth)
+routes.post('/verify', loginController.verify)
+routes.post('/checkmail', loginController.checkmail)
+routes.post('/forgotpwd', loginController.forgotpwd)
+routes.post('/sendcode', loginController.sendcode)
 
 /* user API */
 const cpUpload = upload.fields([
@@ -26,14 +26,14 @@ const cpUpload = upload.fields([
   { name: 'cv_2_file', maxCount: 1 }, 
   { name: 'cv_3_file', maxCount: 1 }, 
 ])
-routes.post('/getMypassword', cors(), userdashController.getMypassword)
-routes.post('/fetchTable', cors(), userdashController.fetchTable)
-routes.post('/fetchPaper', cors(), userdashController.fetchPaper)
-routes.post('/savePaperOne', cors(), cpUpload, userdashController.savePaperOne)
-routes.post('/updatePaperOne', cors(), cpUpload, userdashController.updatePaperOne)
-routes.post('/savePaperGroup', cors(), cpUpload, userdashController.savePaperGroup)
-routes.post('/updatePaperGroup', cors(), cpUpload, userdashController.updatePaperGroup)
-routes.post('/submitPaper', cors(), userdashController.submitPaper)
+routes.post('/getMypassword', userdashController.getMypassword)
+routes.post('/fetchTable', userdashController.fetchTable)
+routes.post('/fetchPaper', userdashController.fetchPaper)
+routes.post('/savePaperOne', cpUpload, userdashController.savePaperOne)
+routes.post('/updatePaperOne', cpUpload, userdashController.updatePaperOne)
+routes.post('/savePaperGroup', cpUpload, userdashController.savePaperGroup)
+routes.post('/updatePaperGroup', cpUpload, userdashController.updatePaperGroup)
+routes.post('/submitPaper', userdashController.submitPaper)
 
 //Export to index.JS
 module.exports = routes
