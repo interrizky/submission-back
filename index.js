@@ -9,16 +9,19 @@ const dotenv = require('dotenv')
 /* load dotenv */
 dotenv.config();
 
+
 /* set up */
 const port = process.env.PORT || 2022;
 const app = express();
+
+/* use CORS for all */
+app.use(cors());
 
 /* for app running connection with port and Mongo database */
 // const server = http.createServer(app)
 const server = https.createServer(app)
 server.listen(port, () => { console.log(`Server is running in port ${ port }`) })
 
-app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
