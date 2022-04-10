@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config({ path: 'ENV_FILENAME' });
 
 // Load environment variables from .env file
 dotenv.config();

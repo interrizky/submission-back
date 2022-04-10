@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const http = require('http');
 const morgan = require('morgan'); 
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config({ path: 'ENV_FILENAME' });
 
 /* set up */
 const port = process.env.PORT || 2020;
