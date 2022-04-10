@@ -1,8 +1,8 @@
-const express = require('express')
-const JWT = require('jsonwebtoken')
-const { ConnectionClosedEvent } = require('mongodb')
+const jwt = require('jsonwebtoken')
 const date = require('date-and-time')
-const path = require('path');
+const bcrypt = require('bcryptjs')
+const randomstring = require('randomstring')
+const path = require('path')
 
 /* config and setup email */
 const mail = require('../lib/email/send')
@@ -48,7 +48,9 @@ exports.register = async(request, response) => {
     /* call generate code user */
     let number = await generateCodeUser().then(result => result)
     let newNumber = 'UID-'+number
-    console.log(newNumber)
+
+    /* hash password */
+    passwordHash = bcrypt.hashSync(request.body.data_password, 10)
 
     const dataOptions = new userModel({
       userid_code: newNumber,
@@ -56,7 +58,7 @@ exports.register = async(request, response) => {
       email: request.body.data_email,
       phone: request.body.data_handphone,
       organization: request.body.data_organisasi,
-      password: request.body.data_password,
+      password: passwordHash,
       role: "peserta",
       user_status: "inactive",
       registration_code: rand,
@@ -64,8 +66,6 @@ exports.register = async(request, response) => {
     })
 
     if( dataOptions !== null ) {
-      console.log(dataOptions)
-
       /* save to database */
       const posting = dataOptions.save()
       
@@ -138,10 +138,20 @@ exports.checkmail = async(req, res) => {
 exports.forgotpwd = async(req, res) => {
   const data = await userModel.findOne( { 'email': req.body.data_email } )
 
-  console.log(data)
-  console.log(req.body.data_kode)
+  /* newString for password */
+  const newString = randomstring.generate({
+    length: 8,
+    charset: 'alphanumeric'
+  })
+  
+  /* hash new password */
+  passwordHash = bcrypt.hashSync(newString, 10);
 
-  if(data && req.body.data_kode === 'passwd') {
+  const filter = { 'email': req.body.data_email }
+  const update = { 'password': passwordHash }
+  const tada = await userModel.findOneAndUpdate(filter, update, {returnOriginal: false})
+
+  if(data && tada && req.body.data_kode === 'passwd') {
     /* forgot password */
     let mailOptions = {
       from: "EJAVEC 2022 <submission@ejavec.org>",
@@ -150,7 +160,7 @@ exports.forgotpwd = async(req, res) => {
       subject: "Kode Password",
       template: 'ejavec-lupa-password', // the name of the template file i.e email.handlebars
       context:{
-        password: data.password,
+        password: newString,
       },
       attachments: [{
         filename: 'ejavec-forum-email-logo.png',
@@ -227,13 +237,16 @@ exports.auth = async(req, res) => {
   if( !req.body.username || req.body.username == '' || !req.body.passwd || req.body.passwd == '' ) {
       res.status(200).send({ message: 'Typo Username or Password?' })
   } else {
-    const data = await userModel.findOne( {'email': req.body.username, 'password': req.body.passwd} )
+    const data = await userModel.findOne( {'email': req.body.username} )
 
-    if( data === null || data === 'undefined' ) {
-      res.status(200).send({
-        message: "Hey, Invalid username or password",
-      })      
+    if ( !data || !bcrypt.compareSync(req.body.passwd, data.password) || data === null || data === 'undefined' ) {
+      res.status(200).send({ message: "Hey, Invalid username or password"})
     } else {
+      let token = jwt.sign({
+        email: data.email,
+        role: data.role
+      }, 'ejavecPrivKey' )
+
       let userData = {
         userid_code: data.userid_code,
         email: data.email,
@@ -241,13 +254,11 @@ exports.auth = async(req, res) => {
         role: data.role,
         phone: data.phone,
         organization: data.organization,
-        user_status: data.user_status
+        user_status: data.user_status,
+        token: token,
+        token_type: 'Bearer'        
       }
-
-      res.status(200).send({
-        message: "OK",
-        result: userData
-      })
+      res.status(200).send({message: "OK", result: userData})
     }      
   }
 }
