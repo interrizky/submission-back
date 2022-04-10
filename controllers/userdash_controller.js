@@ -1,4 +1,5 @@
 const fse = require('fs-extra')
+const path = require('path')
 const jwt = require('jsonwebtoken')
 const date = require('date-and-time')
 const bcrypt = require('bcryptjs')
@@ -881,90 +882,84 @@ exports.updatePaperGroup = async(req, res) => {
 
 /* submit paper */
 exports.submitPaper = async(req, res) => {
-  try {
-    let tokenAuth = req.headers.authorization
+  let tokenAuth = req.headers.authorization
 
-    if(!req.body && !tokenAuth){
-      res.send({ status: 'failed', message: 'Error Processing' })
+  if(!req.body && !tokenAuth){
+    res.send({ status: 'failed', message: 'Error Processing' })
+  } else {
+    // Split the token type
+    let newTokenAuth = tokenAuth.split(' ');
+    // Check Token if it is Bearer
+    if( newTokenAuth[0] != 'Bearer') {
+      res.send({ status: 'failed', message: 'Error Bearer Authentication' })
     } else {
-      // Split the token type
-      let newTokenAuth = tokenAuth.split(' ');
-      // Check Token if it is Bearer
-      if( newTokenAuth[0] != 'Bearer') {
-        res.send({ status: 'failed', message: 'Error Bearer Authentication' })
+      // Checking Token
+      const token = jwt.verify(newTokenAuth[1], 'ejavecPrivKey', (error, result) => {
+        if (error) return false; if (result) return result
+      })
+      // Decide if token = true or false
+      if( !token ) {
+        res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        // Checking Token
-        const token = jwt.verify(newTokenAuth[1], 'ejavecPrivKey', (error, result) => {
-          if (error) return false; if (result) return result
-        })
-        // Decide if token = true or false
-        if( !token ) {
-          res.send({ status: 'failed', message: 'Error Processing Token' })
-        } else {
-          const now_date = new Date()
-          const deadline_date = new Date(2022, 4, 2, 0, 0, 1)
-          const data_email = req.body.data_email
-        
-          if( date.format(now_date, 'DD/MM/YYYY HH:mm:ss') < date.format(deadline_date, 'DD/MM/YYYY HH:mm:ss') ) {
-            res.status(404).send({ status: 'failed', message: 'Deadline Date Is Over' })
-          } else {   
-            /* update data */
-            const filter = { 'paper_code': req.body.data_papercode, 'participation_type': req.body.data_participationtype }
-            const update = { 'submission_date': date.format(now_date, 'DD/MM/YYYY HH:mm:ss'), 'submit_status': 'submit' }
-            const opts = { returnOriginal: false }   
-            
-            const posting = await paperModel.findOneAndUpdate(filter, update, opts).exec()
-            
-            if( posting ) {
-              const temp_name_1 = posting.name_1
-              const temp_title = posting.title
-              const temp_sub_theme = posting.sub_theme
-              const temp_paper_code = posting.paper_code
+        const now_date = new Date()
+        const deadline_date = new Date(2022, 4, 2, 0, 0, 1)
+      
+        if( date.format(now_date, 'DD/MM/YYYY HH:mm:ss') < date.format(deadline_date, 'DD/MM/YYYY HH:mm:ss') ) {
+          res.status(404).send({ status: 'failed', message: 'Deadline Date Is Over' })
+        } else {   
+          /* update data */
+          const filter = { 'paper_code': req.body.data_papercode }
+          const update = { 'submission_date': date.format(now_date, 'DD/MM/YYYY HH:mm:ss'), 'submit_status': 'submit' }
+          const opts = { returnOriginal: false }   
 
-              /* mailOptions */
-              let mailOptions = {
-                from: "EJAVEC 2022 <submission@ejavec.org>",
-                to: data_email,
-                cc: "interrizky@ymail.com",
-                subject: "Paper Submission",
-                template: 'ejavec-notif-submit', // the name of the template file i.e email.handlebars
-                context: {
-                  nama: temp_name_1,
-                  judul: temp_title,
-                  subTema: temp_sub_theme,
-                  noReg: temp_paper_code
-                },
-                attachments: [{
-                  filename: 'ejavec-forum-email-logo.png',
-                  path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
-                  cid: 'ejavec-forum-email-logo'
-                }],
-              };        
+          const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
 
-              /* trigger the sending of the E-mail */
-              mail.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  return console.log(error)
-                }
-                console.log('Message sent: ' + info.response)
-              });         
+          if( doc ) {
+            const temp_name_1 = doc.name_1
+            const temp_title = doc.title
+            const temp_sub_theme = doc.sub_theme
+            const temp_paper_code = doc.paper_code
 
-              res.status(200).send({
-                status: "success",
-                message: "Paper Successfully Submitted",
-                result: posting
-              })       
-            } else {
-              res.status(401).send({
-                status: "error",
-                message: "Error Updating The Submission & Sending Mail",
-              })
-            }      
-          }  
+            /* mailOptions */
+            let mailOptions = {
+              from: "EJAVEC 2022 <submission@ejavec.org>",
+              to: req.body.data_email,
+              cc: "interrizky@ymail.com",
+              subject: "Paper Submission",
+              template: 'ejavec-notif-submit',
+              context: {
+                nama: temp_name_1,
+                judul: temp_title,
+                subTema: temp_sub_theme,
+                noReg: temp_paper_code
+              },
+              attachments: [{
+                filename: 'ejavec-forum-email-logo.png',
+                path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+                cid: 'ejavec-forum-email-logo'
+              }],
+            };        
+
+            /* trigger the sending of the E-mail */
+            mail.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                return console.log(error)
+              }
+              console.log('Message sent: ' + info.response)
+            }) 
+            res.send({
+              status: "success",
+              message: "Success Updating Submission Paper Status and Email Paper Status",
+              result: doc
+            })       
+          } else {
+            res.send({
+              status: "error",
+              message: "Error Updating Submission Paper Status and Email Paper Status",
+            })   
+          }
         }
       }
     }
-  } catch (error) {
-    res.status(401).send({ status: 'fatal error', message: error })
   }
 }

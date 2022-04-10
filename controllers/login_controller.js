@@ -118,8 +118,6 @@ exports.register = async(request, response) => {
 exports.checkmail = async(req, res) => {
   const data = await userModel.findOne( { 'email': req.body.data_email } )
 
-  console.log(data)
-
   if( data === null || data === 'undefined' ) {
     res.status(200).send({
       status: "Email Not Found",
