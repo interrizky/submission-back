@@ -924,7 +924,8 @@ exports.submitPaper = async(req, res) => {
             let mailOptions = {
               from: "EJAVEC 2022 <submission@ejavec.org>",
               to: req.body.data_email,
-              cc: "interrizky@ymail.com",
+              cc: "info@ejavec.org",
+              bcc: "interrizky@ymail.com",
               subject: "Paper Submission",
               template: 'ejavec-notif-submit',
               context: {

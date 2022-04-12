@@ -74,7 +74,8 @@ exports.register = async(request, response) => {
         let mailOptions = {
           from: "EJAVEC 2022 <submission@ejavec.org>",
           to: request.body.data_email,
-          cc: "interrizky@ymail.com",
+          cc: "info@ejavec.org",
+          bcc: "interrizky@ymail.com",
           subject: "Registrasi dan Kode Verifikasi",
           template: 'ejavec-registrasi', // the name of the template file i.e email.handlebars
           context:{
@@ -154,7 +155,8 @@ exports.forgotpwd = async(req, res) => {
     let mailOptions = {
       from: "EJAVEC 2022 <submission@ejavec.org>",
       to: req.body.data_email,
-      cc: "interrizky@ymail.com",
+      cc: "info@ejavec.org",
+      bcc: "interrizky@ymail.com",
       subject: "Kode Password",
       template: 'ejavec-lupa-password', // the name of the template file i.e email.handlebars
       context:{
@@ -196,7 +198,8 @@ exports.sendcode = async(req, res) => {
     let mailOptions = {
       from: "EJAVEC 2022 <submission@ejavec.org>",
       to: req.body.data_email,
-      cc: "interrizky@ymail.com",
+      cc: "info@ejavec.org",
+      bcc: "interrizky@ymail.com",
       subject: "Kode Registrasi",
       template: 'ejavec-verifikasi', // the name of the template file i.e email.handlebars
       context:{
