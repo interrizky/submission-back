@@ -72,7 +72,7 @@ exports.register = async(request, response) => {
       if( posting ) {
         /* registrasi template */
         let mailOptions = {
-          from: "EJAVEC 2022 <submission@ejavec.org>",
+          from: "EJAVEC FORUM 2022 <info@ejavec.org>",
           to: request.body.data_email,
           cc: "info@ejavec.org",
           bcc: "interrizky@ymail.com",
@@ -153,7 +153,7 @@ exports.forgotpwd = async(req, res) => {
   if(data && tada && req.body.data_kode === 'passwd') {
     /* forgot password */
     let mailOptions = {
-      from: "EJAVEC 2022 <submission@ejavec.org>",
+      from: "EJAVEC FORUM 2022 <info@ejavec.org>",
       to: req.body.data_email,
       cc: "info@ejavec.org",
       bcc: "interrizky@ymail.com",
@@ -196,7 +196,7 @@ exports.sendcode = async(req, res) => {
 
   if(data && req.body.data_kode === 'sendcode') {
     let mailOptions = {
-      from: "EJAVEC 2022 <submission@ejavec.org>",
+      from: "EJAVEC FORUM 2022 <info@ejavec.org>",
       to: req.body.data_email,
       cc: "info@ejavec.org",
       bcc: "interrizky@ymail.com",
