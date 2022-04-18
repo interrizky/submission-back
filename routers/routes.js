@@ -1,13 +1,11 @@
 const express = require('express')
-// const multer = require('multer')
-// const path = require('path')
-const cors = require('cors')
 const routes = express.Router()
 
 const { upload } = require('../helpers/upload_helper');
 
 const loginController = require('../controllers/login_controller')
 const userdashController = require('../controllers/userdash_controller')
+const adminController = require('../controllers/admin_controller')
 
 /* login API */
 routes.post('/register', loginController.register)
@@ -34,6 +32,10 @@ routes.post('/updatePaperOne', cpUpload, userdashController.updatePaperOne)
 routes.post('/savePaperGroup', cpUpload, userdashController.savePaperGroup)
 routes.post('/updatePaperGroup', cpUpload, userdashController.updatePaperGroup)
 routes.post('/submitPaper', userdashController.submitPaper)
+
+/* admin API */
+routes.post('/fetchPaperTable', adminController.fetchPaperTable)
+routes.post('/fetchShariaTable', adminController.fetchShariaTable)
 
 //Export to index.JS
 module.exports = routes
