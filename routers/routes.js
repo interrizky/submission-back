@@ -36,6 +36,12 @@ routes.post('/submitPaper', userdashController.submitPaper)
 /* admin API */
 routes.post('/fetchPaperTable', adminController.fetchPaperTable)
 routes.post('/fetchShariaTable', adminController.fetchShariaTable)
+routes.post('/fetchUserStatus', adminController.fetchUserStatus)
+routes.post('/fetchAllPaperByType', adminController.fetchAllPaperByType)
+routes.post('/fetchTenUserLatest', adminController.fetchTenUserLatest)
+routes.post('/fetchGeneralPaperStatus', adminController.fetchGeneralPaperStatus)
+routes.post('/fetchREMStatus', adminController.fetchREMStatus)
+routes.post('/fetchShariaStatus', adminController.fetchShariaStatus)
 
 //Export to index.JS
 module.exports = routes
