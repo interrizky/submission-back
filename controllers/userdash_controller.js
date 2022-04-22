@@ -73,9 +73,6 @@ const generateCodePaper = async(paper_type_param) => {
   //   number = 1
   // }  
 
-  // console.log(filter)
-  // console.log("dari generate : " + number)
-
   let newNumber = ""
   if( number >= 1 && number <= 9 ) {
     newNumber = "000"+number
@@ -127,7 +124,6 @@ exports.savePaperOne = async(req, res) => {
 
           /* call generate code paper */
           let number = await generateCodePaper(req.body['jenis_paper_text']).then(result => result)
-          // console.log("dari function save : " +number)
 
           /* generate paper code */
           let registration_code = huruf+number
@@ -470,6 +466,25 @@ exports.savePaperGroup = async(req, res) => {
         if( !token ) {
           res.send({ status: 'failed', message: 'Error Processing Token' })
         } else {
+          /* override date object */
+          const now = new Date()
+
+          /* generate huruf */
+          let huruf = ""
+          if( req.body['jenis_paper_text'] === 'General Paper' ) {
+            huruf = (req.body['kategori'] === 'Mahasiswa') ?  "GPM-" : "GPU-"
+          } else if( req.body['jenis_paper_text'] === 'Regional Economic Modeling Paper'  ) {
+            huruf = "REM-"
+          } else {
+            huruf = "SJC-"
+          }
+
+          /* call generate code paper */
+          let number = await generateCodePaper(req.body['jenis_paper_text']).then(result => result)
+
+          /* generate paper code */
+          let registration_code = huruf+number
+
           /* untuk cek isian peserta ketiga kalo ada yang iseng input separo */
           let _nama_3 = ""
           let _instansi_3 = ""
@@ -495,26 +510,7 @@ exports.savePaperGroup = async(req, res) => {
             _cv_filePath_3 = 'uploads/' + registration_code + '/' + req.files['cv_3_file'][0].originalname
             _cv_fileType_3 = req.files['cv_3_file'][0].mimetype 
             _cv_fileSize_3 = fileSizeFormatter(req.files['cv_3_file'][0].size, 2)                    
-          }
-
-          /* override date object */
-          const now = new Date()
-
-          /* generate huruf */
-          let huruf = ""
-          if( req.body['jenis_paper_text'] === 'General Paper' ) {
-            huruf = (req.body['kategori'] === 'Mahasiswa') ?  "GPM-" : "GPU-"
-          } else if( req.body['jenis_paper_text'] === 'Regional Economic Modeling Paper'  ) {
-            huruf = "REM-"
-          } else {
-            huruf = "SJC-"
-          }
-
-          /* call generate code paper */
-          let number = await generateCodePaper().then(result => result)
-
-          /* generate paper code */
-          let registration_code = huruf+number
+          }          
 
           /* generate string untuk lampiran */
           let _lampiran_fileName_1 = ""
@@ -584,6 +580,8 @@ exports.savePaperGroup = async(req, res) => {
             cv_fileType_3 : _cv_fileType_3,
             cv_fileSize_3 : _cv_fileSize_3,                                                    
           })
+
+          console.log(arrayOptions)
 
           const posting = arrayOptions.save()
 

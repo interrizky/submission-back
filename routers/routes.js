@@ -19,10 +19,10 @@ routes.post('/sendcode', loginController.sendcode)
 const cpUpload = upload.fields([
   { name: 'paper_file', maxCount: 1 }, 
   { name: 'cv_file', maxCount: 1 }, 
-  { name: 'pernyataan_file', maxCount: 1 },
-  { name: 'lampiran_file', maxCount: 1 },
   { name: 'cv_2_file', maxCount: 1 }, 
   { name: 'cv_3_file', maxCount: 1 }, 
+  { name: 'pernyataan_file', maxCount: 1 },
+  { name: 'lampiran_file', maxCount: 1 },  
 ])
 routes.post('/getMypassword', userdashController.getMypassword)
 routes.post('/fetchTable', userdashController.fetchTable)
