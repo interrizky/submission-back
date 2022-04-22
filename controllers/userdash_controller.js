@@ -61,14 +61,20 @@ const fileSizeFormatter = (bytes, decimal) => {
 }
 
 /* format kode paper */
-const generateCodePaper = async() => {
-  let number = await paperModel.estimatedDocumentCount({}).exec()
+const generateCodePaper = async(paper_type_param) => {
+  const filter = { 'paper_type': paper_type_param };
+  const datax = await paperModel.find(filter)
+  const number = datax.length > 0 ? datax.length+1 : 0
 
-  if(number > 0) {
-    number = number+1
-  } else {
-    number = 1
-  }
+  // let datax = await paperModel.find(filter).estimatedDocumentCount({}).exec()  
+  // if(number > 0) {
+  //   number = number+1
+  // } else {
+  //   number = 1
+  // }  
+
+  // console.log(filter)
+  // console.log("dari generate : " + number)
 
   let newNumber = ""
   if( number >= 1 && number <= 9 ) {
@@ -120,7 +126,8 @@ exports.savePaperOne = async(req, res) => {
           }
 
           /* call generate code paper */
-          let number = await generateCodePaper().then(result => result)
+          let number = await generateCodePaper(req.body['jenis_paper_text']).then(result => result)
+          // console.log("dari function save : " +number)
 
           /* generate paper code */
           let registration_code = huruf+number
@@ -157,6 +164,7 @@ exports.savePaperOne = async(req, res) => {
             submit_status: "-",
             paper_status: "-",        
             name_1: req.query['name'],
+            email_1: req.query['email'],            
             phone_1: req.query['phone'],
             organization_1: req.query['organization'],        
             cv_filePath_1: 'uploads/' + registration_code + '/' + req.files['cv_file'][0].originalname,
@@ -540,6 +548,7 @@ exports.savePaperGroup = async(req, res) => {
             submit_status: "-",
             paper_status: "-",        
             name_1: req.query['name'],
+            email_1: req.query['email'],
             phone_1: req.query['phone'],
             organization_1: req.query['organization'],        
             cv_filePath_1: 'uploads/' + registration_code + '/' + req.files['cv_file'][0].originalname,
