@@ -25,6 +25,7 @@ var paperSchema = new Mongoose.Schema({
   submit_status: { type: String }, //submit or nosubmit
   paper_status: { type: String }, //lolos or nololos
   name_1 : { type: String },
+  email_1 : { type: String },  
   phone_1 : { type: String },
   organization_1 : { type: String },
   cv_fileName_1 : { type: String },
