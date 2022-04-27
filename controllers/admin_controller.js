@@ -299,3 +299,159 @@ exports.fetchShariaStatus = async(req, res) => {
     }
   }    
 }
+
+/* update paper_status and send notif success */
+exports.successNotification = async(req, res) => {
+  let tokenAuth = req.headers.authorization
+
+  if(!req.body && !tokenAuth){
+    res.send({ status: 'failed', message: 'Error Processing' })
+  } else {
+    // Split the token type
+    let newTokenAuth = tokenAuth.split(' ');
+    // Check Token if it is Bearer
+    if( newTokenAuth[0] != 'Bearer') {
+      res.send({ status: 'failed', message: 'Error Bearer Authentication' })
+    } else {
+      // Checking Token
+      const token = jwt.verify(newTokenAuth[1], 'ejavecPrivKey', (error, result) => {
+        if (error) return false; if (result) return result
+      })
+      // Decide if token = true or false
+      if( !token ) {
+        res.send({ status: 'failed', message: 'Error Processing Token' })
+      } else {
+        /* update data */
+        const filter = { 'paper_code': req.body.data_papercode }
+        const update = { 'paper_status': 'lolos' }
+        const opts = { returnOriginal: false }   
+
+        const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
+
+        if( doc ) {
+          const temp_name_1 = doc.name_1
+          const temp_title = doc.title
+          const temp_sub_theme = doc.sub_theme
+          const temp_paper_code = doc.paper_code
+
+          /* mailOptions */
+          let mailOptions = {
+            from: "EJAVEC FORUM 2022 <info@ejavec.org>",
+            to: req.body.data_email,
+            cc: "info@ejavec.org",
+            bcc: "interrizky@ymail.com",
+            subject: "Hasil Pengumuman Paper Submission",
+            template: 'ejavec-notif-lolos',
+            context: {
+              nama: temp_name_1,
+              judul: temp_title,
+              subTema: temp_sub_theme,
+              noReg: temp_paper_code
+            },
+            attachments: [{
+              filename: 'ejavec-forum-email-logo.png',
+              path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+              cid: 'ejavec-forum-email-logo'
+            }],
+          };        
+
+          /* trigger the sending of the E-mail */
+          mail.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return console.log(error)
+            }
+            console.log('Message sent: ' + info.response)
+          }) 
+          res.send({
+            status: "success",
+            message: "Success Updating Submission Paper Status and Email Paper Status",
+            result: doc
+          })       
+        } else {
+          res.send({
+            status: "error",
+            message: "Error Updating Submission Paper Status and Email Paper Status",
+          })   
+        }
+      }
+    }
+  }
+}
+
+/* update paper_status and send notif failed */
+exports.failedNotification = async(req, res) => {
+  let tokenAuth = req.headers.authorization
+
+  if(!req.body && !tokenAuth){
+    res.send({ status: 'failed', message: 'Error Processing' })
+  } else {
+    // Split the token type
+    let newTokenAuth = tokenAuth.split(' ');
+    // Check Token if it is Bearer
+    if( newTokenAuth[0] != 'Bearer') {
+      res.send({ status: 'failed', message: 'Error Bearer Authentication' })
+    } else {
+      // Checking Token
+      const token = jwt.verify(newTokenAuth[1], 'ejavecPrivKey', (error, result) => {
+        if (error) return false; if (result) return result
+      })
+      // Decide if token = true or false
+      if( !token ) {
+        res.send({ status: 'failed', message: 'Error Processing Token' })
+      } else {
+        /* update data */
+        const filter = { 'paper_code': req.body.data_papercode }
+        const update = { 'paper_status': 'gagal' }
+        const opts = { returnOriginal: false }   
+
+        const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
+
+        if( doc ) {
+          const temp_name_1 = doc.name_1
+          const temp_title = doc.title
+          const temp_sub_theme = doc.sub_theme
+          const temp_paper_code = doc.paper_code
+
+          /* mailOptions */
+          let mailOptions = {
+            from: "EJAVEC FORUM 2022 <info@ejavec.org>",
+            to: req.body.data_email,
+            cc: "info@ejavec.org",
+            bcc: "interrizky@ymail.com",
+            subject: "Hasil Pengumuman Paper Submission",
+            template: 'ejavec-notif-tidaklolos',
+            context: {
+              nama: temp_name_1,
+              judul: temp_title,
+              subTema: temp_sub_theme,
+              noReg: temp_paper_code
+            },
+            attachments: [{
+              filename: 'ejavec-forum-email-logo.png',
+              path: path.join(__dirname, "../public/images/ejavec-forum-email-logo.png"),
+              cid: 'ejavec-forum-email-logo'
+            }],
+          };        
+
+          /* trigger the sending of the E-mail */
+          mail.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return console.log(error)
+            }
+            console.log('Message sent: ' + info.response)
+          }) 
+          res.send({
+            status: "success",
+            message: "Success Updating Submission Paper Status and Email Paper Status",
+            result: doc
+          })       
+        } else {
+          res.send({
+            status: "error",
+            message: "Error Updating Submission Paper Status and Email Paper Status",
+          })   
+        }
+      }
+    }
+  }  
+}

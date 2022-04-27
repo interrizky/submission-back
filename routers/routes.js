@@ -42,6 +42,8 @@ routes.post('/fetchTenUserLatest', adminController.fetchTenUserLatest)
 routes.post('/fetchGeneralPaperStatus', adminController.fetchGeneralPaperStatus)
 routes.post('/fetchREMStatus', adminController.fetchREMStatus)
 routes.post('/fetchShariaStatus', adminController.fetchShariaStatus)
+routes.post('/successNotification', adminController.successNotification)
+routes.post('/failedNotification', adminController.failedNotification)
 
 //Export to index.JS
 module.exports = routes
