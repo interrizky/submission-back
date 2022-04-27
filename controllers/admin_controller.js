@@ -32,7 +32,7 @@ exports.fetchPaperTable = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {   
-        const datax = await paperModel.find({ $or:[ {'paper_type': "General Paper"}, {'paper_type': "Regional Economic Modeling Paper"} ] })
+        const datax = await paperModel.find({ $or:[ {'paper_type': "General Paper"}, {'paper_type': "Regional Economic Modeling Paper"} ] }).sort({submission_date : -1})
         // const number = await paperModel.find({ $or:[ {'paper_type': "General Paper"}, {'paper_type': "Regional Economic Modeling Paper"} ] }).estimatedDocumentCount().exec()
         const number = datax.length > 0 ? datax.length : 0
         if( datax != null ) {
@@ -67,7 +67,7 @@ exports.fetchShariaTable = async(req, res) => {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
         const filter = { paper_type: "Java Sharia Business Model" }   
-        const datax = await paperModel.find(filter)
+        const datax = await paperModel.find(filter).sort({submission_date : -1})
         // const number = await paperModel.find(filter).estimatedDocumentCount()
         const number = datax.length > 0 ? datax.length : 0
         if( datax != null ) {
