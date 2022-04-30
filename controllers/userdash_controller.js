@@ -405,11 +405,22 @@ exports.fetchTable = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {   
-        const datax = await paperModel.find({ 'userid_code' : req.body.data_userid })
-        if( datax != null ) {
-          res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax })
+        if(req.body.data_fetch == 'search') {
+          const filter = { userid_code : req.body.data_userid, title: new RegExp(req.body.data_keyword, 'i') }
+          const datax = await paperModel.find(filter).sort({upload_date: -1})
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }          
         } else {
-          res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          const filter = { 'userid_code' : req.body.data_userid }
+          const datax = await paperModel.find(filter).sort({upload_date: -1})
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }
         }
       }
     }

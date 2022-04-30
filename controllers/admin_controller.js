@@ -1,8 +1,5 @@
-const fse = require('fs-extra')
 const path = require('path')
 const jwt = require('jsonwebtoken')
-const date = require('date-and-time')
-const bcrypt = require('bcryptjs')
 
 /* config and setup email */
 const mail = require('../lib/email/send')
@@ -31,14 +28,38 @@ exports.fetchPaperTable = async(req, res) => {
       // Decide if token = true or false
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
-      } else {   
-        const datax = await paperModel.find({ $or:[ {'paper_type': "General Paper"}, {'paper_type': "Regional Economic Modeling Paper"} ] }).sort({submission_date : -1})
-        // const number = await paperModel.find({ $or:[ {'paper_type': "General Paper"}, {'paper_type': "Regional Economic Modeling Paper"} ] }).estimatedDocumentCount().exec()
-        const number = datax.length > 0 ? datax.length : 0
-        if( datax != null ) {
-          res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+      } else {
+        if( req.body.data_fetch == 'search' ) {
+          let filter = ''
+          let keyword = req.body.data_keyword
+
+          if( req.body.data_filter == 'kodepaper') {
+            filter = { paper_code: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
+          } else if ( req.body.data_filter == 'nama') {
+            filter = { name_1: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
+          } else {
+            filter = { title: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
+          }
+
+          const datax = await paperModel.find(filter).sort({submission_date: -1})
+          const number = datax.length > 0 ? datax.length : 0
+
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }
         } else {
-          res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          const filter = { submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
+
+          const datax = await paperModel.find(filter).sort({submission_date : -1})
+          const number = datax.length > 0 ? datax.length : 0
+
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }
         }
       }
     }
@@ -66,14 +87,37 @@ exports.fetchShariaTable = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const filter = { submit_status: 'submit', paper_type: "Java Sharia Business Model" }   
-        const datax = await paperModel.find(filter).sort({submission_date : -1})
-        // const number = await paperModel.find(filter).estimatedDocumentCount()
-        const number = datax.length > 0 ? datax.length : 0
-        if( datax != null ) {
-          res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+        if( req.body.data_fetch == 'search' ) {
+          let filter = ''
+          let keyword = req.body.data_keyword
+
+          if( req.body.data_filter == 'kodepaper') {
+            filter = { paper_code: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
+          } else if ( req.body.data_filter == 'nama') {
+            filter = { name_1: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
+          } else {
+            filter = { title: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
+          }
+
+          const datax = await paperModel.find(filter).sort({submission_date: -1})
+          const number = datax.length > 0 ? datax.length : 0
+
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }
         } else {
-          res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          const filter = { submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
+
+          const datax = await paperModel.find(filter).sort({submission_date : -1})
+          const number = datax.length > 0 ? datax.length : 0
+          
+          if( datax != null ) {
+            res.send({ status: 'success', message: 'Fetching Table Succeed', result: datax, number: number })
+          } else {
+            res.send({ status: 'failed', message: 'Fetching Table Failed' })
+          }
         }
       }
     }
