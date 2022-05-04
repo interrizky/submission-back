@@ -41,7 +41,7 @@ exports.fetchPaperTable = async(req, res) => {
             filter = { title: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
           }
 
-          const datax = await paperModel.find(filter).sort({submission_date: -1})
+          const datax = await paperModel.find(filter).sort({createdAt: -1})
           const number = datax.length > 0 ? datax.length : 0
 
           if( datax != null ) {
@@ -52,7 +52,7 @@ exports.fetchPaperTable = async(req, res) => {
         } else {
           const filter = { submit_status: 'submit', paper_type: {$in: ['General Paper', 'Regional Economic Modeling Paper']} }
 
-          const datax = await paperModel.find(filter).sort({submission_date : -1})
+          const datax = await paperModel.find(filter).sort({createdAt : -1})
           const number = datax.length > 0 ? datax.length : 0
 
           if( datax != null ) {
@@ -99,7 +99,7 @@ exports.fetchShariaTable = async(req, res) => {
             filter = { title: new RegExp(keyword, 'i'), submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
           }
 
-          const datax = await paperModel.find(filter).sort({submission_date: -1})
+          const datax = await paperModel.find(filter).sort({createdAt: -1})
           const number = datax.length > 0 ? datax.length : 0
 
           if( datax != null ) {
@@ -110,7 +110,7 @@ exports.fetchShariaTable = async(req, res) => {
         } else {
           const filter = { submit_status: 'submit', paper_type: {$in: ['Java Sharia Business Model']} }
 
-          const datax = await paperModel.find(filter).sort({submission_date : -1})
+          const datax = await paperModel.find(filter).sort({createdAt : -1})
           const number = datax.length > 0 ? datax.length : 0
           
           if( datax != null ) {
@@ -222,7 +222,7 @@ exports.fetchTenUserLatest = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await userModel.find().sort({registration_date: -1}).limit(10);
+        const datax = await userModel.find().sort({createdAt: -1}).limit(10);
         if( datax != null ) {
           res.send({ status: 'success', message: 'Fetching Succeed', result: datax })
         } else {

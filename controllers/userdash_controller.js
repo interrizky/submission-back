@@ -155,7 +155,7 @@ exports.savePaperOne = async(req, res) => {
             sub_theme: req.body['sub_tema_text'],  
             category: req.body['kategori'],
             participation_type: req.body['keikutsertaan'],
-            upload_date: date.format(now, 'DD/MM/YYYY HH:mm:ss'),
+            upload_date: date.format(now, 'YYYY/MM/DD HH:mm:ss'),
             submission_date : "-",
             submit_status: "-",
             paper_status: "-",        
@@ -220,7 +220,7 @@ exports.savePaperOne = async(req, res) => {
       }
     }
   } catch (error) {
-    res.send({ status: "error", message: "Invalid Action" })    
+    res.send({ status: "error", message: "Invalid Action. Re-check The Appropiate File Type Allowed" })    
   }
 }
 
@@ -550,7 +550,7 @@ exports.savePaperGroup = async(req, res) => {
             sub_theme: req.body['sub_tema_text'],  
             category: req.body['kategori'],
             participation_type: req.body['keikutsertaan'],
-            upload_date: date.format(now, 'DD/MM/YYYY HH:mm:ss'),
+            upload_date: date.format(now, 'YYYY/MM/DD HH:mm:ss'),
             submission_date : "-",
             submit_status: "-",
             paper_status: "-",        
@@ -920,17 +920,17 @@ exports.submitPaper = async(req, res) => {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
         const now_date = new Date()
-        const deadline_date = new Date(2022, 4, 2, 23, 59, 59)
+        const deadline_date = new Date(2022, 4, 27, 23, 59, 59)
         const sharia_date = new Date(2022, 6, 8, 23, 59, 59)
       
-        if( req.body.data_papertype !== 'Java Sharia Business Model' && (date.format(now_date, 'DD/MM/YYYY HH:mm:ss') < date.format(deadline_date, 'DD/MM/YYYY HH:mm:ss')) ) {
-          res.status(404).send({ status: 'failed', message: 'Deadline Date Is Over' })
-        } else if( req.body.data_papertype === 'Java Sharia Business Model' && (date.format(now_date, 'DD/MM/YYYY HH:mm:ss') < date.format(sharia_date, 'DD/MM/YYYY HH:mm:ss')) ) {
-          res.status(404).send({ status: 'failed', message: 'Deadline Date Is Over' })
+        if( req.body.data_papertype !== 'Java Sharia Business Model' && (date.format(now_date, 'YYYY/MM/DD HH:mm:ss') > date.format(deadline_date, 'YYYY/MM/DD HH:mm:ss')) ) {
+          res.status(200).send({ status: 'failed', message: 'Deadline Date Is Over' })
+        } else if( req.body.data_papertype === 'Java Sharia Business Model' && (date.format(now_date, 'YYYY/MM/DD HH:mm:ss') > date.format(sharia_date, 'YYYY/MM/DD HH:mm:ss')) ) {          
+          res.status(200).send({ status: 'failed', message: 'Deadline Date Is Over' })
         } else {   
           /* update data */
           const filter = { 'paper_code': req.body.data_papercode }
-          const update = { 'submission_date': date.format(now_date, 'DD/MM/YYYY HH:mm:ss'), 'submit_status': 'submit' }
+          const update = { 'submission_date': date.format(now_date, 'YYYY/MM/DD HH:mm:ss'), 'submit_status': 'submit' }
           const opts = { returnOriginal: false }   
 
           const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
