@@ -373,11 +373,6 @@ exports.successNotification = async(req, res) => {
         const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
 
         if( doc ) {
-          const temp_name_1 = doc.name_1
-          const temp_title = doc.title
-          const temp_sub_theme = doc.sub_theme
-          const temp_paper_code = doc.paper_code
-
           /* mailOptions */
           let mailOptions = {
             from: "EJAVEC FORUM 2022 <info@ejavec.org>",
@@ -387,10 +382,10 @@ exports.successNotification = async(req, res) => {
             subject: "Hasil Pengumuman Paper Submission",
             template: 'ejavec-notif-lolos',
             context: {
-              nama: temp_name_1,
-              judul: temp_title,
-              subTema: temp_sub_theme,
-              noReg: temp_paper_code
+              nama: req.body.data_name,
+              judul: req.body.data_title,
+              subTema: req.body.data_subtheme,
+              noReg: req.body.data_papercode
             },
             attachments: [{
               filename: 'ejavec-forum-email-logo.png',
@@ -451,11 +446,6 @@ exports.failedNotification = async(req, res) => {
         const doc = await paperModel.findOneAndUpdate(filter, update, opts).exec()
 
         if( doc ) {
-          const temp_name_1 = doc.name_1
-          const temp_title = doc.title
-          const temp_sub_theme = doc.sub_theme
-          const temp_paper_code = doc.paper_code
-
           /* mailOptions */
           let mailOptions = {
             from: "EJAVEC FORUM 2022 <info@ejavec.org>",
@@ -465,10 +455,10 @@ exports.failedNotification = async(req, res) => {
             subject: "Hasil Pengumuman Paper Submission",
             template: 'ejavec-notif-tidaklolos',
             context: {
-              nama: temp_name_1,
-              judul: temp_title,
-              subTema: temp_sub_theme,
-              noReg: temp_paper_code
+              nama: req.body.data_name,
+              judul: req.body.data_title,
+              subTema: req.body.data_subtheme,
+              noReg: req.body.data_papercode
             },
             attachments: [{
               filename: 'ejavec-forum-email-logo.png',
