@@ -44,6 +44,9 @@ routes.post('/fetchREMStatus', adminController.fetchREMStatus)
 routes.post('/fetchShariaStatus', adminController.fetchShariaStatus)
 routes.post('/successNotification', adminController.successNotification)
 routes.post('/failedNotification', adminController.failedNotification)
+routes.post('/fetchGeneralPaperByTheme', adminController.fetchGeneralPaperByTheme)
+routes.post('/fetchREMByTheme', adminController.fetchREMByTheme)
+routes.post('/fetchShariaByTheme', adminController.fetchShariaByTheme)
 
 //Export to index.JS
 module.exports = routes
