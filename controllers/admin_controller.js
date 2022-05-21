@@ -511,36 +511,49 @@ exports.fetchGeneralPaperByTheme = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const tema1 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Strategi dan inovasi pengembangan UMKM untuk masuk dalam Global Value Chain dalam upaya mendorong akselerasi ekspor di Jawa Timur.' })
-        const tema2 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Peran digitalisasi dalam mendukung akselerasi pemulihan ekonomi Jawa Timur. Diharapkan paper dapat diaplikasikan dan direplikasi, misalnya dengan menghitung dampak digitalisasi (misalnya: dengan adanya digitalisasi, berapa potensi korupsi/ fraud yang hilang, benchmarking dampak digitalasi yang dapat dihitung secara kuantitatif/ kualitatif).' })
-        const tema3 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Optimalisasi peran Jawa Timur sebagai hub perdagangan kawasan timur Indonesia dan produsen utama perdagangan antar daerah dalam upaya mendorong percepatan pemulihan ekonomi Jawa Timur.' })
-        const tema4 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Strategi dan inovasi akselerasi daya saing ekspor luar negeri Jawa Timur menuju Lead Export Industri Manufaktur.' })
-        const tema5 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Optimalisasi kinerja sektor pariwisata (hospitality) Jawa Timur di tengah pandemi COVID-19 dan strategi mendorong pemulihannya.' })
-        const tema6 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Peningkatan daya saing investasi Jawa Timur di tengah kompetisi global dan potensi divestasi.' })
-        const tema7 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Strategi mendorong peningkatan pangsa ekonomi syariah di Jawa Timur melalui sinergi para pelaku ekonomi syariah Jawa Timur dan optimalisasi kawasan industri halal.'})
-        const tema8 = await paperModel.find({  paper_type: "General Paper", submit_status: "submit", sub_theme: 'Evaluasi kinerja Industri Pengolahan Jawa Timur dan strategi akselerasi pemulihannya dengan mempertimbangkan konsep green economy.'})        
+        const tema1Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Strategi dan inovasi pengembangan UMKM untuk masuk dalam Global Value Chain dalam upaya mendorong akselerasi ekspor di Jawa Timur.' })
+        const tema2Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Peran digitalisasi dalam mendukung akselerasi pemulihan ekonomi Jawa Timur. Diharapkan paper dapat diaplikasikan dan direplikasi, misalnya dengan menghitung dampak digitalisasi (misalnya: dengan adanya digitalisasi, berapa potensi korupsi/ fraud yang hilang, benchmarking dampak digitalasi yang dapat dihitung secara kuantitatif/ kualitatif).' })
+        const tema3Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Optimalisasi peran Jawa Timur sebagai hub perdagangan kawasan timur Indonesia dan produsen utama perdagangan antar daerah dalam upaya mendorong percepatan pemulihan ekonomi Jawa Timur.' })
+        const tema4Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Strategi dan inovasi akselerasi daya saing ekspor luar negeri Jawa Timur menuju Lead Export Industri Manufaktur.' })
+        const tema5Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Optimalisasi kinerja sektor pariwisata (hospitality) Jawa Timur di tengah pandemi COVID-19 dan strategi mendorong pemulihannya.' })
+        const tema6Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Peningkatan daya saing investasi Jawa Timur di tengah kompetisi global dan potensi divestasi.' })
+        const tema7Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Strategi mendorong peningkatan pangsa ekonomi syariah di Jawa Timur melalui sinergi para pelaku ekonomi syariah Jawa Timur dan optimalisasi kawasan industri halal.'})
+        const tema8Mhs = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Mahasiswa', sub_theme: 'Evaluasi kinerja Industri Pengolahan Jawa Timur dan strategi akselerasi pemulihannya dengan mempertimbangkan konsep green economy.'})        
 
-        const angkaTema1 = tema1.length > 0 ? tema1.length : 0
-        const angkaTema2 = tema2.length > 0 ? tema2.length : 0     
-        const angkaTema3 = tema3.length > 0 ? tema3.length : 0
-        const angkaTema4 = tema4.length > 0 ? tema4.length : 0
-        const angkaTema5 = tema5.length > 0 ? tema5.length : 0
-        const angkaTema6 = tema6.length > 0 ? tema6.length : 0
-        const angkaTema7 = tema7.length > 0 ? tema7.length : 0
-        const angkaTema8 = tema8.length > 0 ? tema8.length : 0
+        const tema1Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Strategi dan inovasi pengembangan UMKM untuk masuk dalam Global Value Chain dalam upaya mendorong akselerasi ekspor di Jawa Timur.' })
+        const tema2Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Peran digitalisasi dalam mendukung akselerasi pemulihan ekonomi Jawa Timur. Diharapkan paper dapat diaplikasikan dan direplikasi, misalnya dengan menghitung dampak digitalisasi (misalnya: dengan adanya digitalisasi, berapa potensi korupsi/ fraud yang hilang, benchmarking dampak digitalasi yang dapat dihitung secara kuantitatif/ kualitatif).' })
+        const tema3Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Optimalisasi peran Jawa Timur sebagai hub perdagangan kawasan timur Indonesia dan produsen utama perdagangan antar daerah dalam upaya mendorong percepatan pemulihan ekonomi Jawa Timur.' })
+        const tema4Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Strategi dan inovasi akselerasi daya saing ekspor luar negeri Jawa Timur menuju Lead Export Industri Manufaktur.' })
+        const tema5Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Optimalisasi kinerja sektor pariwisata (hospitality) Jawa Timur di tengah pandemi COVID-19 dan strategi mendorong pemulihannya.' })
+        const tema6Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Peningkatan daya saing investasi Jawa Timur di tengah kompetisi global dan potensi divestasi.' })
+        const tema7Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Strategi mendorong peningkatan pangsa ekonomi syariah di Jawa Timur melalui sinergi para pelaku ekonomi syariah Jawa Timur dan optimalisasi kawasan industri halal.'})
+        const tema8Non = await paperModel.find({ paper_type: "General Paper", submit_status: "submit", category: 'Umum', sub_theme: 'Evaluasi kinerja Industri Pengolahan Jawa Timur dan strategi akselerasi pemulihannya dengan mempertimbangkan konsep green economy.'})                
 
-        if( tema1 != null && tema2 != null && tema3 != null && tema4 != null && tema5 != null && tema6 != null && tema7 != null && tema8 != null ) {
+        const angkaTema1Mhs = tema1Mhs.length > 0 ? tema1Mhs.length : 0
+        const angkaTema2Mhs = tema2Mhs.length > 0 ? tema2Mhs.length : 0     
+        const angkaTema3Mhs = tema3Mhs.length > 0 ? tema3Mhs.length : 0
+        const angkaTema4Mhs = tema4Mhs.length > 0 ? tema4Mhs.length : 0
+        const angkaTema5Mhs = tema5Mhs.length > 0 ? tema5Mhs.length : 0
+        const angkaTema6Mhs = tema6Mhs.length > 0 ? tema6Mhs.length : 0
+        const angkaTema7Mhs = tema7Mhs.length > 0 ? tema7Mhs.length : 0
+        const angkaTema8Mhs = tema8Mhs.length > 0 ? tema8Mhs.length : 0
+
+        const angkaTema1Non = tema1Non.length > 0 ? tema1Non.length : 0
+        const angkaTema2Non = tema2Non.length > 0 ? tema2Non.length : 0     
+        const angkaTema3Non = tema3Non.length > 0 ? tema3Non.length : 0
+        const angkaTema4Non = tema4Non.length > 0 ? tema4Non.length : 0
+        const angkaTema5Non = tema5Non.length > 0 ? tema5Non.length : 0
+        const angkaTema6Non = tema6Non.length > 0 ? tema6Non.length : 0
+        const angkaTema7Non = tema7Non.length > 0 ? tema7Non.length : 0
+        const angkaTema8Non = tema8Non.length > 0 ? tema8Non.length : 0        
+
+        if( tema1Mhs && tema2Mhs && tema3Mhs && tema4Mhs && tema5Mhs && tema6Mhs && tema7Mhs && tema8Mhs && 
+          tema1Non && tema2Non && tema3Non && tema4Non && tema5Non && tema6Non && tema7Non && tema8Non ) {
           res.send({ 
             status: 'success', 
-            message: 'Fetching Succeed', 
-            angkaTema1: angkaTema1,
-            angkaTema2: angkaTema2,
-            angkaTema3: angkaTema3,
-            angkaTema4: angkaTema4,
-            angkaTema5: angkaTema5,
-            angkaTema6: angkaTema6,
-            angkaTema7: angkaTema7,
-            angkaTema8: angkaTema8,            
+            message: 'Fetching Succeed',
+            angkaMhs: [angkaTema1Mhs, angkaTema2Mhs, angkaTema3Mhs, angkaTema4Mhs, angkaTema5Mhs, angkaTema6Mhs, angkaTema7Mhs, angkaTema8Mhs],
+            angkaNon: [angkaTema1Non, angkaTema2Non, angkaTema3Non, angkaTema4Non, angkaTema5Non, angkaTema6Non, angkaTema7Non, angkaTema8Non]            
           })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
@@ -571,11 +584,11 @@ exports.fetchREMByTheme = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const tema1 = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Model proyeksi/forecasting pertumbuhan ekonomi Jawa Timur dan turunannya (Sisi Permintaan)' })
-        const tema2 = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Model proyeksi/forecasting pertumbuhan ekonomi Jawa Timur dan turunannya (Sisi Penawaran)' })
-        const tema3 = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Simulasi berbagai dampak isu strategis terhadap ketahanan perekonomian Jawa Timur' })
-        const tema4 = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Simulasi berbagai opsi kebijakan, baik kebijakan moneter, makroprudensial, mikroprudensial, fiskal, maupun kebijakan pemerintah pusat dan daerah, serta kebijakan negara lain terhadap perekonomian Jawa Timur.' })
-        const tema5 = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Fundamental pertumbuhan ekonomi Jawa Timur ke depan' })
+        const tema1 = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Model proyeksi/forecasting pertumbuhan ekonomi Jawa Timur dan turunannya (Sisi Permintaan)' })
+        const tema2 = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Model proyeksi/forecasting pertumbuhan ekonomi Jawa Timur dan turunannya (Sisi Penawaran)' })
+        const tema3 = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Simulasi berbagai dampak isu strategis terhadap ketahanan perekonomian Jawa Timur' })
+        const tema4 = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Simulasi berbagai opsi kebijakan, baik kebijakan moneter, makroprudensial, mikroprudensial, fiskal, maupun kebijakan pemerintah pusat dan daerah, serta kebijakan negara lain terhadap perekonomian Jawa Timur.' })
+        const tema5 = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit", sub_theme: 'Fundamental pertumbuhan ekonomi Jawa Timur ke depan' })
 
         const angkaTema1 = tema1.length > 0 ? tema1.length : 0
         const angkaTema2 = tema2.length > 0 ? tema2.length : 0     
