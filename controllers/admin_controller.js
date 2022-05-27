@@ -145,14 +145,42 @@ exports.fetchUserStatus = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await userModel.find({ role: "peserta", user_status: "active" })
+        const datax = await userModel.find({ role: "peserta", user_status: "active" }).sort({ userid_code: "asc" })
         const activeNumber = datax.length > 0 ? datax.length : 0
+
+        let activeData = []
+
+        for( let i=0; i<datax.length; i++ ) {
+          activeData[i] = {
+            NO : i+1, 
+            USERID_CODE : datax[i].userid_code,
+            NAME : datax[i].name,
+            ORGANIZATION : datax[i].organization,
+            PHONE : datax[i].phone,
+            EMAIL : datax[i].email,
+            REGISTRATION_DATE : datax[i].registration_date            
+          }
+        }
 
         const dataxx = await userModel.find({ role: "peserta", user_status: "inactive" })
         const nonActiveNumber = dataxx.length > 0 ? dataxx.length : 0
 
+        let inactiveData = []
+
+        for( let i=0; i<dataxx.length; i++ ) {
+          inactiveData[i] = {
+            NO : i+1, 
+            USERID_CODE : dataxx[i].userid_code,
+            NAME : dataxx[i].name,
+            ORGANIZATION : dataxx[i].organization,
+            PHONE : dataxx[i].phone,
+            EMAIL : dataxx[i].email,
+            REGISTRATION_DATE : dataxx[i].registration_date            
+          }
+        }
+
         if( datax != null && dataxx != null ) {
-          res.send({ status: 'success', message: 'Fetching Succeed', activeNumber: activeNumber, nonActiveNumber: nonActiveNumber })
+          res.send({ status: 'success', message: 'Fetching Succeed', resultActive: activeData, resultInactive: inactiveData, activeNumber: activeNumber, nonActiveNumber: nonActiveNumber })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
         }
@@ -182,17 +210,102 @@ exports.fetchAllPaperByType = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await paperModel.find({  paper_type: "General Paper" })
+        let listGP = []
+        let listREM = []
+        let listSharia = []
+        
+        const datax = await paperModel.find({ paper_type: "General Paper" }).sort({ title: "asc" })
         const angkaGP = datax.length > 0 ? datax.length : 0
 
-        const dataxx = await paperModel.find({  paper_type: "Regional Economic Modeling Paper" })
+        for( let i=0; i<datax.length; i++ ) {
+          listGP[i] = {
+            NO : i+1, 
+            PAPER_CODE : datax[i].paper_code,
+            USERID_CODE : datax[i].userid_code,
+            JUDUL : datax[i].title,
+            JENIS_PAPER : datax[i].paper_type,
+            TEMA : datax[i].sub_theme,
+            KATEGORI : datax[i].category,
+            JENIS_PARTISIPASI : datax[i].participation_type,
+            TANGGAL_UPLOAD : datax[i].upload_date,
+            TANGGAL_SUBMIT : datax[i].submission_date,
+            STATUS_SUBMISSION : datax[i].submit_status,
+            STATUS_PAPER : datax[i].paper_status,
+            NAMA_PESERTA_1 : datax[i].name_1,
+            TLP_PESERTA_1 : datax[i].phone_1,
+            INSTANSI_PESERTA_1 : datax[i].organization_1,
+            EMAIL : datax[i].email_1,
+            NAMA_PESERTA_2 : datax[i].name_2, 
+            TLP_PESERTA_2 : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : datax[i].organization_2,
+            NAMA_PESERTA_3 : datax[i].name_3, 
+            TLP_PESERTA_3 : datax[i].phone_3,
+            INSTANSI_PESERTA_1 : datax[i].organization_3
+          }
+        }          
+
+        const dataxx = await paperModel.find({  paper_type: "Regional Economic Modeling Paper" }).sort({ title: "asc" })
         const angkaREM = dataxx.length > 0 ? dataxx.length : 0
 
-        const dataxxx = await paperModel.find({  paper_type: "Java Sharia Business Model" })
-        const angkaSharia = dataxxx.length > 0 ? dataxxx.length : 0        
+        for( let i=0; i<dataxx.length; i++ ) {
+          listREM[i] = {
+            NO : i+1, 
+            PAPER_CODE : dataxx[i].paper_code,
+            USERID_CODE : dataxx[i].userid_code,
+            JUDUL : dataxx[i].title,
+            JENIS_PAPER : dataxx[i].paper_type,
+            TEMA : dataxx[i].sub_theme,
+            KATEGORI : dataxx[i].category,
+            JENIS_PARTISIPASI : dataxx[i].participation_type,
+            TANGGAL_UPLOAD : dataxx[i].upload_date,
+            TANGGAL_SUBMIT : dataxx[i].submission_date,
+            STATUS_SUBMISSION : dataxx[i].submit_status,
+            STATUS_PAPER : dataxx[i].paper_status,
+            NAMA_PESERTA_1 : dataxx[i].name_1,
+            TLP_PESERTA_1 : dataxx[i].phone_1,
+            INSTANSI_PESERTA_1 : dataxx[i].organization_1,
+            EMAIL : dataxx[i].email_1,
+            NAMA_PESERTA_2 : dataxx[i].name_2, 
+            TLP_PESERTA_2 : dataxx[i].phone_2,
+            INSTANSI_PESERTA_2 : dataxx[i].organization_2,
+            NAMA_PESERTA_3 : dataxx[i].name_3, 
+            TLP_PESERTA_3 : dataxx[i].phone_3,
+            INSTANSI_PESERTA_1 : dataxx[i].organization_3
+          }
+        }         
+
+        const dataxxx = await paperModel.find({  paper_type: "Java Sharia Business Model" }).sort({ title: "asc" })
+        const angkaSharia = dataxxx.length > 0 ? dataxxx.length : 0
+
+        for( let i=0; i<dataxxx.length; i++ ) {
+          listSharia[i] = {
+            NO : i+1, 
+            PAPER_CODE : dataxxx[i].paper_code,
+            USERID_CODE : dataxxx[i].userid_code,
+            JUDUL : dataxxx[i].title,
+            JENIS_PAPER : dataxxx[i].paper_type,
+            TEMA : dataxxx[i].sub_theme,
+            KATEGORI : dataxxx[i].category,
+            JENIS_PARTISIPASI : dataxxx[i].participation_type,
+            TANGGAL_UPLOAD : dataxxx[i].upload_date,
+            TANGGAL_SUBMIT : dataxxx[i].submission_date,
+            STATUS_SUBMISSION : dataxxx[i].submit_status,
+            STATUS_PAPER : dataxxx[i].paper_status,
+            NAMA_PESERTA_1 : dataxxx[i].name_1,
+            TLP_PESERTA_1 : dataxxx[i].phone_1,
+            INSTANSI_PESERTA_1 : dataxxx[i].organization_1,
+            EMAIL : dataxxx[i].email_1,
+            NAMA_PESERTA_2 : dataxxx[i].name_2, 
+            TLP_PESERTA_2 : dataxxx[i].phone_2,
+            INSTANSI_PESERTA_2 : dataxxx[i].organization_2,
+            NAMA_PESERTA_3 : dataxxx[i].name_3, 
+            TLP_PESERTA_3 : dataxxx[i].phone_3,
+            INSTANSI_PESERTA_1 : dataxxx[i].organization_3
+          }
+        }  
 
         if( datax != null && dataxx != null && dataxxx != null ) {
-          res.send({ status: 'success', message: 'Fetching Succeed', angkaGP: angkaGP, angkaREM: angkaREM, angkaSharia: angkaSharia })
+          res.send({ status: 'success', message: 'Fetching Succeed', listGP: listGP, listREM: listREM, listSharia: listSharia, angkaGP: angkaGP, angkaREM: angkaREM, angkaSharia: angkaSharia })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
         }
@@ -254,14 +367,71 @@ exports.fetchGeneralPaperStatus = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await paperModel.find({  paper_type: "General Paper", submit_status: "submit" })
+        listSubmitGP = []
+        listNotSubmitGP = []
+
+        const datax = await paperModel.find({  paper_type: "General Paper", submit_status: "submit" }).sort({ title: 'asc' })
         const angkaGPSubmit = datax.length > 0 ? datax.length : 0
 
-        const doc = await paperModel.find({  paper_type: "General Paper", submit_status: "-" })
-        const angkaGPNon = doc.length > 0 ? doc.length : 0        
+        for( let i=0; i<datax.length; i++ ) {
+          listSubmitGP[i] = {
+            NO : i+1, 
+            PAPER_CODE : datax[i].paper_code,
+            USERID_CODE : datax[i].userid_code,
+            JUDUL : datax[i].title,
+            JENIS_PAPER : datax[i].paper_type,
+            TEMA : datax[i].sub_theme,
+            KATEGORI : datax[i].category,
+            JENIS_PARTISIPASI : datax[i].participation_type,
+            TANGGAL_UPLOAD : datax[i].upload_date,
+            TANGGAL_SUBMIT : datax[i].submission_date,
+            STATUS_SUBMISSION : datax[i].submit_status,
+            STATUS_PAPER : datax[i].paper_status,
+            NAMA_PESERTA_1 : datax[i].name_1,
+            TLP_PESERTA_1 : datax[i].phone_1,
+            INSTANSI_PESERTA_1 : datax[i].organization_1,
+            EMAIL : datax[i].email_1,
+            NAMA_PESERTA_2 : datax[i].name_2, 
+            TLP_PESERTA_2 : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : datax[i].organization_2,
+            NAMA_PESERTA_3 : datax[i].name_3, 
+            TLP_PESERTA_3 : datax[i].phone_3,
+            INSTANSI_PESERTA_1 : datax[i].organization_3
+          }
+        }          
+
+        const doc = await paperModel.find({  paper_type: "General Paper", submit_status: "-" }).sort({ title: 'asc' })
+        const angkaGPNon = doc.length > 0 ? doc.length : 0
+        
+        for( let i=0; i<doc.length; i++ ) {
+          listNotSubmitGP[i] = {
+            NO : i+1, 
+            PAPER_CODE : doc[i].paper_code,
+            USERID_CODE : doc[i].userid_code,
+            JUDUL : doc[i].title,
+            JENIS_PAPER : doc[i].paper_type,
+            TEMA : doc[i].sub_theme,
+            KATEGORI : doc[i].category,
+            JENIS_PARTISIPASI : doc[i].participation_type,
+            TANGGAL_UPLOAD : doc[i].upload_date,
+            TANGGAL_SUBMIT : doc[i].submission_date,
+            STATUS_SUBMISSION : doc[i].submit_status,
+            STATUS_PAPER : doc[i].paper_status,
+            NAMA_PESERTA_1 : doc[i].name_1,
+            TLP_PESERTA_1 : doc[i].phone_1,
+            INSTANSI_PESERTA_1 : doc[i].organization_1,
+            EMAIL : doc[i].email_1,
+            NAMA_PESERTA_2 : doc[i].name_2, 
+            TLP_PESERTA_2 : doc[i].phone_2,
+            INSTANSI_PESERTA_2 : doc[i].organization_2,
+            NAMA_PESERTA_3 : doc[i].name_3, 
+            TLP_PESERTA_3 : doc[i].phone_3,
+            INSTANSI_PESERTA_1 : doc[i].organization_3
+          }
+        }          
 
         if( datax != null && doc != null ) {
-          res.send({ status: 'success', message: 'Fetching Succeed', angkaGPSubmit: angkaGPSubmit, angkaGPNon: angkaGPNon, })
+          res.send({ status: 'success', message: 'Fetching Succeed', listSubmitGP: listSubmitGP, listNotSubmitGP: listNotSubmitGP, angkaGPSubmit: angkaGPSubmit, angkaGPNon: angkaGPNon, })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
         }
@@ -291,14 +461,71 @@ exports.fetchREMStatus = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "submit" })
+        let listSubmitREM = []
+        let listNotSubmitREM = []
+
+        const datax = await paperModel.find({ paper_type: "Regional Economic Modeling Paper", submit_status: "submit" }).sort({ title: 'asc' })
         const angkaREMSubmit = datax.length > 0 ? datax.length : 0
 
-        const doc = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "-" })
-        const angkaREMNon = doc.length > 0 ? doc.length : 0        
+        for( let i=0; i<datax.length; i++ ) {
+          listSubmitREM[i] = {
+            NO : i+1, 
+            PAPER_CODE : datax[i].paper_code,
+            USERID_CODE : datax[i].userid_code,
+            JUDUL : datax[i].title,
+            JENIS_PAPER : datax[i].paper_type,
+            TEMA : datax[i].sub_theme,
+            KATEGORI : datax[i].category,
+            JENIS_PARTISIPASI : datax[i].participation_type,
+            TANGGAL_UPLOAD : datax[i].upload_date,
+            TANGGAL_SUBMIT : datax[i].submission_date,
+            STATUS_SUBMISSION : datax[i].submit_status,
+            STATUS_PAPER : datax[i].paper_status,
+            NAMA_PESERTA_1 : datax[i].name_1,
+            TLP_PESERTA_1 : datax[i].phone_1,
+            INSTANSI_PESERTA_1 : datax[i].organization_1,
+            EMAIL : datax[i].email_1,
+            NAMA_PESERTA_2 : datax[i].name_2, 
+            TLP_PESERTA_2 : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : datax[i].organization_2,
+            NAMA_PESERTA_3 : datax[i].name_3, 
+            TLP_PESERTA_3 : datax[i].phone_3,
+            INSTANSI_PESERTA_1 : datax[i].organization_3
+          }
+        }           
+
+        const doc = await paperModel.find({  paper_type: "Regional Economic Modeling Paper", submit_status: "-" }).sort({ title: 'asc' })
+        const angkaREMNon = doc.length > 0 ? doc.length : 0 
+        
+        for( let i=0; i<doc.length; i++ ) {
+          listNotSubmitREM[i] = {
+            NO : i+1, 
+            PAPER_CODE : doc[i].paper_code,
+            USERID_CODE : doc[i].userid_code,
+            JUDUL : doc[i].title,
+            JENIS_PAPER : doc[i].paper_type,
+            TEMA : doc[i].sub_theme,
+            KATEGORI : doc[i].category,
+            JENIS_PARTISIPASI : doc[i].participation_type,
+            TANGGAL_UPLOAD : doc[i].upload_date,
+            TANGGAL_SUBMIT : doc[i].submission_date,
+            STATUS_SUBMISSION : doc[i].submit_status,
+            STATUS_PAPER : doc[i].paper_status,
+            NAMA_PESERTA_1 : doc[i].name_1,
+            TLP_PESERTA_1 : doc[i].phone_1,
+            INSTANSI_PESERTA_1 : doc[i].organization_1,
+            EMAIL : doc[i].email_1,
+            NAMA_PESERTA_2 : doc[i].name_2, 
+            TLP_PESERTA_2 : doc[i].phone_2,
+            INSTANSI_PESERTA_2 : doc[i].organization_2,
+            NAMA_PESERTA_3 : doc[i].name_3, 
+            TLP_PESERTA_3 : doc[i].phone_3,
+            INSTANSI_PESERTA_1 : doc[i].organization_3
+          }
+        }          
 
         if( datax != null && doc != null ) {
-          res.send({ status: 'success', message: 'Fetching Succeed', angkaREMSubmit: angkaREMSubmit, angkaREMNon: angkaREMNon, })
+          res.send({ status: 'success', message: 'Fetching Succeed', listSubmitREM: listSubmitREM, listNotSubmitREM: listNotSubmitREM, angkaREMSubmit: angkaREMSubmit, angkaREMNon: angkaREMNon })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
         }
