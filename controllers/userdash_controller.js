@@ -920,7 +920,7 @@ exports.submitPaper = async(req, res) => {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
         const now_date = new Date()
-        const deadline_date = new Date(2022, 4, 27, 23, 59, 59)
+        const deadline_date = new Date(2022, 4, 28, 6, 0, 0)
         const sharia_date = new Date(2022, 6, 8, 23, 59, 59)
       
         if( req.body.data_papertype !== 'Java Sharia Business Model' && (date.format(now_date, 'YYYY/MM/DD HH:mm:ss') > date.format(deadline_date, 'YYYY/MM/DD HH:mm:ss')) ) {
