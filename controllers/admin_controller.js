@@ -270,7 +270,7 @@ exports.fetchAllPaperByType = async(req, res) => {
             INSTANSI_PESERTA_2 : dataxx[i].organization_2,
             NAMA_PESERTA_3 : dataxx[i].name_3, 
             TLP_PESERTA_3 : dataxx[i].phone_3,
-            INSTANSI_PESERTA_1 : dataxx[i].organization_3
+            INSTANSI_PESERTA_3 : dataxx[i].organization_3
           }
         }         
 
@@ -300,7 +300,7 @@ exports.fetchAllPaperByType = async(req, res) => {
             INSTANSI_PESERTA_2 : dataxxx[i].organization_2,
             NAMA_PESERTA_3 : dataxxx[i].name_3, 
             TLP_PESERTA_3 : dataxxx[i].phone_3,
-            INSTANSI_PESERTA_1 : dataxxx[i].organization_3
+            INSTANSI_PESERTA_3 : dataxxx[i].organization_3
           }
         }  
 
@@ -426,7 +426,7 @@ exports.fetchGeneralPaperStatus = async(req, res) => {
             INSTANSI_PESERTA_2 : doc[i].organization_2,
             NAMA_PESERTA_3 : doc[i].name_3, 
             TLP_PESERTA_3 : doc[i].phone_3,
-            INSTANSI_PESERTA_1 : doc[i].organization_3
+            INSTANSI_PESERTA_3 : doc[i].organization_3
           }
         }          
 
@@ -520,7 +520,7 @@ exports.fetchREMStatus = async(req, res) => {
             INSTANSI_PESERTA_2 : doc[i].organization_2,
             NAMA_PESERTA_3 : doc[i].name_3, 
             TLP_PESERTA_3 : doc[i].phone_3,
-            INSTANSI_PESERTA_1 : doc[i].organization_3
+            INSTANSI_PESERTA_3 : doc[i].organization_3
           }
         }          
 
