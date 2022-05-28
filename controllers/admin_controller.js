@@ -235,13 +235,13 @@ exports.fetchAllPaperByType = async(req, res) => {
             TLP_PESERTA_1 : datax[i].phone_1,
             INSTANSI_PESERTA_1 : datax[i].organization_1,
             EMAIL : datax[i].email_1,
-            NAMA_PESERTA_2 : datax[i].name_2, 
-            TLP_PESERTA_2 : datax[i].phone_2,
-            INSTANSI_PESERTA_2 : datax[i].organization_2,
-            NAMA_PESERTA_3 : datax[i].name_3, 
-            TLP_PESERTA_3 : datax[i].phone_3,
-            INSTANSI_PESERTA_3 : datax[i].organization_3
-          }
+            NAMA_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_2, 
+            TLP_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_2,
+            NAMA_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_3, 
+            TLP_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_3,
+            INSTANSI_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_3
+          }    
         }          
 
         const dataxx = await paperModel.find({  paper_type: "Regional Economic Modeling Paper" }).sort({ title: "asc" })
@@ -265,12 +265,12 @@ exports.fetchAllPaperByType = async(req, res) => {
             TLP_PESERTA_1 : dataxx[i].phone_1,
             INSTANSI_PESERTA_1 : dataxx[i].organization_1,
             EMAIL : dataxx[i].email_1,
-            NAMA_PESERTA_2 : dataxx[i].name_2, 
-            TLP_PESERTA_2 : dataxx[i].phone_2,
-            INSTANSI_PESERTA_2 : dataxx[i].organization_2,
-            NAMA_PESERTA_3 : dataxx[i].name_3, 
-            TLP_PESERTA_3 : dataxx[i].phone_3,
-            INSTANSI_PESERTA_3 : dataxx[i].organization_3
+            NAMA_PESERTA_2 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].name_2, 
+            TLP_PESERTA_2 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].phone_2,
+            INSTANSI_PESERTA_2 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].organization_2,
+            NAMA_PESERTA_3 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].name_3, 
+            TLP_PESERTA_3 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].phone_3,
+            INSTANSI_PESERTA_3 : ( dataxx[i].participation_type == 'Individu' ) ? '-' : dataxx[i].organization_3
           }
         }         
 
@@ -292,15 +292,15 @@ exports.fetchAllPaperByType = async(req, res) => {
             STATUS_SUBMISSION : dataxxx[i].submit_status,
             STATUS_PAPER : dataxxx[i].paper_status,
             NAMA_PESERTA_1 : dataxxx[i].name_1,
-            TLP_PESERTA_1 : dataxxx[i].phone_1,
             INSTANSI_PESERTA_1 : dataxxx[i].organization_1,
-            EMAIL : dataxxx[i].email_1,
-            NAMA_PESERTA_2 : dataxxx[i].name_2, 
-            TLP_PESERTA_2 : dataxxx[i].phone_2,
-            INSTANSI_PESERTA_2 : dataxxx[i].organization_2,
-            NAMA_PESERTA_3 : dataxxx[i].name_3, 
-            TLP_PESERTA_3 : dataxxx[i].phone_3,
-            INSTANSI_PESERTA_3 : dataxxx[i].organization_3
+            EMAIL : dataxxx[i].email_1,            
+            TLP_PESERTA_1 : dataxxx[i].phone_1,
+            NAMA_PESERTA_2 : ( dataxxx[i].participation_type == 'Individu' ) ? '-' : dataxxx[i].name_2, 
+            TLP_PESERTA_2 : ( dataxxx[i].participation_type == 'Individu' ) ? '-' : dataxxx[i].phone_2,
+            INSTANSI_PESERTA_2 : ( dataxxx[i].participation_type == 'Individu' ) ? '-' : dataxxx[i].organization_2,
+            NAMA_PESERTA_3 : '-',
+            TLP_PESERTA_3 : '-',
+            INSTANSI_PESERTA_3 : '-'
           }
         }  
 
@@ -391,12 +391,12 @@ exports.fetchGeneralPaperStatus = async(req, res) => {
             TLP_PESERTA_1 : datax[i].phone_1,
             INSTANSI_PESERTA_1 : datax[i].organization_1,
             EMAIL : datax[i].email_1,
-            NAMA_PESERTA_2 : datax[i].name_2, 
-            TLP_PESERTA_2 : datax[i].phone_2,
-            INSTANSI_PESERTA_2 : datax[i].organization_2,
-            NAMA_PESERTA_3 : datax[i].name_3, 
-            TLP_PESERTA_3 : datax[i].phone_3,
-            INSTANSI_PESERTA_3 : datax[i].organization_3
+            NAMA_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_2, 
+            TLP_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_2,
+            NAMA_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_3, 
+            TLP_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_3,
+            INSTANSI_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_3
           }
         }          
 
@@ -421,12 +421,12 @@ exports.fetchGeneralPaperStatus = async(req, res) => {
             TLP_PESERTA_1 : doc[i].phone_1,
             INSTANSI_PESERTA_1 : doc[i].organization_1,
             EMAIL : doc[i].email_1,
-            NAMA_PESERTA_2 : doc[i].name_2, 
-            TLP_PESERTA_2 : doc[i].phone_2,
-            INSTANSI_PESERTA_2 : doc[i].organization_2,
-            NAMA_PESERTA_3 : doc[i].name_3, 
-            TLP_PESERTA_3 : doc[i].phone_3,
-            INSTANSI_PESERTA_3 : doc[i].organization_3
+            NAMA_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_2, 
+            TLP_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_2,
+            INSTANSI_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_2,
+            NAMA_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_3, 
+            TLP_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_3,
+            INSTANSI_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_3
           }
         }          
 
@@ -485,12 +485,12 @@ exports.fetchREMStatus = async(req, res) => {
             TLP_PESERTA_1 : datax[i].phone_1,
             INSTANSI_PESERTA_1 : datax[i].organization_1,
             EMAIL : datax[i].email_1,
-            NAMA_PESERTA_2 : datax[i].name_2, 
-            TLP_PESERTA_2 : datax[i].phone_2,
-            INSTANSI_PESERTA_2 : datax[i].organization_2,
-            NAMA_PESERTA_3 : datax[i].name_3, 
-            TLP_PESERTA_3 : datax[i].phone_3,
-            INSTANSI_PESERTA_3 : datax[i].organization_3
+            NAMA_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_2, 
+            TLP_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_2,
+            NAMA_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_3, 
+            TLP_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_3,
+            INSTANSI_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_3
           }
         }           
 
@@ -515,12 +515,12 @@ exports.fetchREMStatus = async(req, res) => {
             TLP_PESERTA_1 : doc[i].phone_1,
             INSTANSI_PESERTA_1 : doc[i].organization_1,
             EMAIL : doc[i].email_1,
-            NAMA_PESERTA_2 : doc[i].name_2, 
-            TLP_PESERTA_2 : doc[i].phone_2,
-            INSTANSI_PESERTA_2 : doc[i].organization_2,
-            NAMA_PESERTA_3 : doc[i].name_3, 
-            TLP_PESERTA_3 : doc[i].phone_3,
-            INSTANSI_PESERTA_3 : doc[i].organization_3
+            NAMA_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_2, 
+            TLP_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_2,
+            INSTANSI_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_2,
+            NAMA_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_3, 
+            TLP_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_3,
+            INSTANSI_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_3
           }
         }          
 
