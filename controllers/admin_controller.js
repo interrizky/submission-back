@@ -335,7 +335,7 @@ exports.fetchTenUserLatest = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
-        const datax = await userModel.find().sort({createdAt: -1}).limit(10);
+        const datax = await userModel.find({ user_status: 'active', role: 'peserta' }).sort({createdAt: -1}).limit(10);
         if( datax != null ) {
           res.send({ status: 'success', message: 'Fetching Succeed', result: datax })
         } else {
@@ -555,14 +555,71 @@ exports.fetchShariaStatus = async(req, res) => {
       if( !token ) {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
+        let listSubmitSharia = []
+        let listNotSubmitSharia = []
+        
         const datax = await paperModel.find({  paper_type: "Java Sharia Business Model", submit_status: "submit" })
         const angkaShariaSubmit = datax.length > 0 ? datax.length : 0
 
+        for( let i=0; i<datax.length; i++ ) {
+          listSubmitSharia[i] = {
+            NO : i+1, 
+            PAPER_CODE : datax[i].paper_code,
+            USERID_CODE : datax[i].userid_code,
+            JUDUL : datax[i].title,
+            JENIS_PAPER : datax[i].paper_type,
+            TEMA : datax[i].sub_theme,
+            KATEGORI : datax[i].category,
+            JENIS_PARTISIPASI : datax[i].participation_type,
+            TANGGAL_UPLOAD : datax[i].upload_date,
+            TANGGAL_SUBMIT : datax[i].submission_date,
+            STATUS_SUBMISSION : datax[i].submit_status,
+            STATUS_PAPER : datax[i].paper_status,
+            NAMA_PESERTA_1 : datax[i].name_1,
+            TLP_PESERTA_1 : datax[i].phone_1,
+            INSTANSI_PESERTA_1 : datax[i].organization_1,
+            EMAIL : ( datax[i].email_1 !== null || datax[i].email_1 !== undefined || datax[i].email_1 !== 'undefined' ) ? datax[i].email_1 : '-',
+            NAMA_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_2, 
+            TLP_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_2,
+            INSTANSI_PESERTA_2 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_2,
+            NAMA_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].name_3, 
+            TLP_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].phone_3,
+            INSTANSI_PESERTA_3 : ( datax[i].participation_type == 'Individu' ) ? '-' : datax[i].organization_3
+          }
+        }        
+
         const doc = await paperModel.find({  paper_type: "Java Sharia Business Model", submit_status: "-" })
-        const angkaShariaNon = doc.length > 0 ? doc.length : 0        
+        const angkaShariaNon = doc.length > 0 ? doc.length : 0   
+        
+        for( let i=0; i<doc.length; i++ ) {
+          listNotSubmitSharia[i] = {
+            NO : i+1, 
+            PAPER_CODE : doc[i].paper_code,
+            USERID_CODE : doc[i].userid_code,
+            JUDUL : doc[i].title,
+            JENIS_PAPER : doc[i].paper_type,
+            TEMA : doc[i].sub_theme,
+            KATEGORI : doc[i].category,
+            JENIS_PARTISIPASI : doc[i].participation_type,
+            TANGGAL_UPLOAD : doc[i].upload_date,
+            TANGGAL_SUBMIT : doc[i].submission_date,
+            STATUS_SUBMISSION : doc[i].submit_status,
+            STATUS_PAPER : doc[i].paper_status,
+            NAMA_PESERTA_1 : doc[i].name_1,
+            TLP_PESERTA_1 : doc[i].phone_1,
+            INSTANSI_PESERTA_1 : doc[i].organization_1,
+            EMAIL : ( datax[i].email_1 !== null || datax[i].email_1 !== undefined || datax[i].email_1 !== 'undefined' ) ? datax[i].email_1 : '-',
+            NAMA_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_2, 
+            TLP_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_2,
+            INSTANSI_PESERTA_2 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_2,
+            NAMA_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].name_3, 
+            TLP_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].phone_3,
+            INSTANSI_PESERTA_3 : ( doc[i].participation_type == 'Individu' ) ? '-' : doc[i].organization_3
+          }
+        }        
 
         if( datax != null && doc != null ) {
-          res.send({ status: 'success', message: 'Fetching Succeed', angkaShariaSubmit: angkaShariaSubmit, angkaShariaNon: angkaShariaNon, })
+          res.send({ status: 'success', message: 'Fetching Succeed', listSubmitSharia: listSubmitSharia, listNotSubmitSharia: listNotSubmitSharia, angkaShariaSubmit: angkaShariaSubmit, angkaShariaNon: angkaShariaNon, })
         } else {
           res.send({ status: 'failed', message: 'Fetching Failed' })
         }
