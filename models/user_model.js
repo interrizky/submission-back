@@ -25,5 +25,5 @@ var userSchema = new Mongoose.Schema({
 
 
 /* ejavec_users adalah nama schema / tabel di MangoDB-nya */
-const user = Mongoose.model('ejavec_users', userSchema);
+const user = Mongoose.model('2023_ejavec_users', userSchema);
 module.exports = user;

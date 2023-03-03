@@ -64,5 +64,5 @@ var paperSchema = new Mongoose.Schema({
 paperSchema.plugin(mongoosePaginate);
 
 /* ejavec_papers adalah nama schema / tabel di MangoDB-nya */
-const paper = Mongoose.model('ejavec_papers', paperSchema);
+const paper = Mongoose.model('2023_ejavec_papers', paperSchema);
 module.exports = paper;

@@ -163,7 +163,6 @@ exports.savePaperOne = async(req, res) => {
             email_1: req.query['email'],            
             phone_1: req.query['phone'],
             organization_1: req.query['organization'],        
-            cv_filePath_1: 'uploads/' + registration_code + '/' + req.files['cv_file'][0].originalname,
             cv_fileName_1: req.files['cv_file'][0].filename,
             cv_filePath_1: 'uploads/' + registration_code + '/' + req.files['cv_file'][0].originalname,
             cv_fileType_1: req.files['cv_file'][0].mimetype,
@@ -920,8 +919,8 @@ exports.submitPaper = async(req, res) => {
         res.send({ status: 'failed', message: 'Error Processing Token' })
       } else {
         const now_date = new Date()
-        const deadline_date = new Date(2022, 4, 28, 6, 0, 0)
-        const sharia_date = new Date(2022, 6, 31, 23, 59, 59)
+        const deadline_date = new Date(2023, 5, 1, 23, 59, 59)
+        const sharia_date = new Date(2023, 7, 1, 23, 59, 59)
       
         if( req.body.data_papertype !== 'Java Sharia Business Model' && (date.format(now_date, 'YYYY/MM/DD HH:mm:ss') > date.format(deadline_date, 'YYYY/MM/DD HH:mm:ss')) ) {
           res.status(200).send({ status: 'failed', message: 'Deadline Date Is Over' })
@@ -943,10 +942,10 @@ exports.submitPaper = async(req, res) => {
 
             /* mailOptions */
             let mailOptions = {
-              from: "EJAVEC FORUM 2022 <info@ejavec.org>",
+              from: "EJAVEC Forum 2023 <submission@ejavec.org>",
               to: req.body.data_email,
-              cc: "info@ejavec.org",
-              bcc: "interrizky@ymail.com",
+              // cc: "submission@ejavec.org",
+              bcc: ["interrizky@ymail.com", "submission@ejavec.org", "admin@ejavec.org"],
               subject: "Paper Submission",
               template: 'ejavec-notif-submit',
               context: {

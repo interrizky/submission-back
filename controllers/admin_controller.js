@@ -659,10 +659,10 @@ exports.successNotification = async(req, res) => {
         if( doc ) {
           /* mailOptions */
           let mailOptions = {
-            from: "EJAVEC FORUM 2022 <info@ejavec.org>",
+            from: "EJAVEC Forum 2023 <submission@ejavec.org>",
             to: req.body.data_email,
-            cc: "info@ejavec.org",
-            bcc: "interrizky@ymail.com",
+            // cc: "submission@ejavec.org",
+            bcc: ["interrizky@ymail.com", "submission@ejavec.org", "admin@ejavec.org"],
             subject: "Hasil Pengumuman Paper Submission",
             template: 'ejavec-notif-lolos',
             context: {
@@ -732,10 +732,10 @@ exports.failedNotification = async(req, res) => {
         if( doc ) {
           /* mailOptions */
           let mailOptions = {
-            from: "EJAVEC FORUM 2022 <info@ejavec.org>",
+            from: "EJAVEC Forum 2023 <submission@ejavec.org>",
             to: req.body.data_email,
-            cc: "info@ejavec.org",
-            bcc: "interrizky@ymail.com",
+            // cc: "submission@ejavec.org",
+            bcc: ["interrizky@ymail.com", "submission@ejavec.org", "admin@ejavec.org"],
             subject: "Hasil Pengumuman Paper Submission",
             template: 'ejavec-notif-tidaklolos',
             context: {
