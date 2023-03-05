@@ -11,6 +11,46 @@ const mail = require('../lib/email/send')
 const userModel = require('../models/user_model')
 const paperModel = require('../models/paper_model')
 
+/* format file size */
+const fileSizeFormatter = (bytes, decimal) => {
+  if(bytes === 0){
+    return '0 Bytes';
+  }
+
+  const dm = decimal || 2;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'YB', 'ZB'];
+  const index = Math.floor(Math.log(bytes) / Math.log(1000));
+
+  return parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + ' ' + sizes[index];
+}
+
+/* format kode paper */
+const generateCodePaper = async(paper_type_param) => {
+  const filter = { 'paper_type': paper_type_param };
+  const datax = await paperModel.find(filter).exec()
+  const number = (datax.length > 0) ? (datax.length+1) : 1
+
+  // let datax = await paperModel.find(filter).estimatedDocumentCount({}).exec()  
+  // if(number > 0) {
+  //   number = number+1
+  // } else {
+  //   number = 1
+  // }  
+
+  let newNumber = ""
+  if( number >= 1 && number <= 9 ) {
+    newNumber = "000"+number
+  } else if(number >= 10 && number <= 99) {
+    newNumber = "00"+number
+  } else if(number >= 100 && number <= 999) {
+    newNumber = "0"+number
+  } else {
+    newNumber = number
+  }
+
+  return newNumber
+}
+
 /* getmypassword di menu change password */
 exports.getMypassword = async(req, res) => {
   let tokenAuth = req.headers.authorization
@@ -45,46 +85,6 @@ exports.getMypassword = async(req, res) => {
       }
     }
   }
-}
-
-/* format file size */
-const fileSizeFormatter = (bytes, decimal) => {
-  if(bytes === 0){
-    return '0 Bytes';
-  }
-
-  const dm = decimal || 2;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'YB', 'ZB'];
-  const index = Math.floor(Math.log(bytes) / Math.log(1000));
-
-  return parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + ' ' + sizes[index];
-}
-
-/* format kode paper */
-const generateCodePaper = async(paper_type_param) => {
-  const filter = { 'paper_type': paper_type_param };
-  const datax = await paperModel.find(filter)
-  const number = datax.length > 0 ? datax.length+1 : 0
-
-  // let datax = await paperModel.find(filter).estimatedDocumentCount({}).exec()  
-  // if(number > 0) {
-  //   number = number+1
-  // } else {
-  //   number = 1
-  // }  
-
-  let newNumber = ""
-  if( number >= 1 && number <= 9 ) {
-    newNumber = "000"+number
-  } else if(number >= 10 && number <= 99) {
-    newNumber = "00"+number
-  } else if(number >= 100 && number <= 999) {
-    newNumber = "0"+number
-  } else {
-    newNumber = number
-  }
-
-  return newNumber
 }
 
 /* save paper one */
@@ -181,7 +181,7 @@ exports.savePaperOne = async(req, res) => {
             lampiran_fileSize_1: _lampiran_fileSize_1,                     
           })
 
-          const posting = arrayOptions.save()
+          const posting = await arrayOptions.save()
 
           if( posting ) {
             /* cek apakah ada file dalam folder tersebut, kalo ada file tsb dipindahin ke direktori yang diinginkan */
@@ -591,9 +591,7 @@ exports.savePaperGroup = async(req, res) => {
             cv_fileSize_3 : _cv_fileSize_3,                                                    
           })
 
-          console.log(arrayOptions)
-
-          const posting = arrayOptions.save()
+          const posting = await arrayOptions.save()
 
           if( posting ) {
             /* cek apakah ada file dalam folder tersebut, kalo ada file tsb dipindahin ke direktori yang diinginkan */
