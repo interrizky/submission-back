@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
 });
 
 const filefilter = (req, file, cb) => {
-  if(file.mimetype === 'application/pdf' || file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+  if(file.mimetype === 'application/pdf' || file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.mimetype === 'application/vnd.rar' || file.mimetype === 'application/zip' ) {
     cb(null, true);
   } else {
     cb(null, false);
